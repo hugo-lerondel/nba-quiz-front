@@ -1,2 +1,40 @@
-# nba-quizz-front
-Application de quizz NBA
+# NBA Quizz Front
+
+Application de quizz NBA — Progressive Web App built with React & TypeScript.
+
+## Tech Stack
+
+| Tool | Purpose |
+|------|---------|
+| [React 19](https://react.dev) | UI framework |
+| [TypeScript](https://www.typescriptlang.org) | Type safety |
+| [Vite](https://vite.dev) | Build tool & dev server |
+| [vite-plugin-pwa](https://vite-pwa-org.netlify.app) | PWA support (service worker, manifest) |
+| [Biome](https://biomejs.dev) | Linter & formatter |
+| [Lefthook](https://github.com/evilmartians/lefthook) | Git hooks (pre-commit lint) |
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server at `http://localhost:5173` |
+| `npm run build` | Type-check and build for production |
+| `npm run preview` | Preview the production build |
+| `npm run lint` | Run Biome checks |
+| `npm run lint:fix` | Run Biome checks and auto-fix |
+| `npm run format` | Format all files with Biome |
+
+## Deployment
+
+The app is automatically deployed to **GitHub Pages** on every push to `main` via GitHub Actions.  
+Live URL: `https://hugo-lerondel.github.io/nba-quizz-front/`
