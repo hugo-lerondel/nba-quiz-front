@@ -1,8 +1,9 @@
 {
-	"name": "nba-quizz-front",
+	"name": "nba-quiz-front",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"packageManager": "bun@1.3.5",
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",

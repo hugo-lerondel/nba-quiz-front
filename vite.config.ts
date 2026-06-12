@@ -4,15 +4,15 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
-	base: "/nba-quizz-front/",
+	base: "/nba-quiz-front/",
 	plugins: [
 		react(),
 		VitePWA({
 			registerType: "autoUpdate",
 			manifest: {
-				name: "NBA Quizz",
-				short_name: "NBAQuizz",
-				description: "Application de quizz NBA",
+				name: "NBA Quiz",
+				short_name: "NBA Quiz",
+				description: "Application de quiz NBA",
 				theme_color: "#1d428a",
 				background_color: "#ffffff",
 				display: "standalone",

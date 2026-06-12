@@ -1,6 +1,6 @@
-# NBA Quizz Front
+# NBA Quiz Front
 
-Application de quizz NBA — Progressive Web App built with React & TypeScript.
+Application de quiz NBA — Progressive Web App built with React & TypeScript.
 
 ## Tech Stack
 
@@ -17,24 +17,24 @@ Application de quizz NBA — Progressive Web App built with React & TypeScript.
 
 ```bash
 # Install dependencies
-npm install
+bun install
 
 # Start development server
-npm run dev
+bun run dev
 ```
 
 ## Available Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start dev server at `http://localhost:5173` |
-| `npm run build` | Type-check and build for production |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | Run Biome checks |
-| `npm run lint:fix` | Run Biome checks and auto-fix |
-| `npm run format` | Format all files with Biome |
+| `bun run dev` | Start dev server at `http://localhost:5173` |
+| `bun run build` | Type-check and build for production |
+| `bun run preview` | Preview the production build |
+| `bun run lint` | Run Biome checks |
+| `bun run lint:fix` | Run Biome checks and auto-fix |
+| `bun run format` | Format all files with Biome |
 
 ## Deployment
 
 The app is automatically deployed to **GitHub Pages** on every push to `main` via GitHub Actions.  
-Live URL: `https://hugo-lerondel.github.io/nba-quizz-front/`
+Live URL: `https://hugo-lerondel.github.io/nba-quiz-front/`
