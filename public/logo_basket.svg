@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <filter id="neon" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Fond transparent -->
+  <g filter="url(#neon)" fill="none" stroke="#ff7a00" stroke-linecap="round">
+    <circle cx="256" cy="256" r="180" stroke-width="12"/>
+    <path d="M256 76 A180 180 0 0 1 256 436" stroke-width="10"/>
+    <path d="M76 256 A180 180 0 0 0 436 256" stroke-width="10"/>
+    <path d="M136 122 C230 210 230 302 136 390" stroke-width="10"/>
+    <path d="M376 122 C282 210 282 302 376 390" stroke-width="10"/>
+  </g>
+</svg>
