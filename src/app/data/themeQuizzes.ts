@@ -3,14 +3,15 @@ import type { Quiz } from "./quizData";
 export const themeQuizzes: Quiz[] = [
 	{
 		id: "quiz-legends",
-		title: "NBA Legends",
+		title: "Légendes de la NBA",
 		category: "quiz",
 		difficulty: "Medium",
 		data: {
 			subType: "theme",
 			questions: [
 				{
-					question: "Who holds the NBA all-time regular season scoring record?",
+					question:
+						"Qui détient le record de points en saison régulière en NBA ?",
 					answer: "LeBron James",
 					choices: [
 						"Kareem Abdul-Jabbar",
@@ -21,13 +22,13 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Michael Jordan won how many NBA championships with the Chicago Bulls?",
+						"Combien de titres NBA Michael Jordan a-t-il remportés avec les Chicago Bulls ?",
 					answer: "6",
 					choices: ["4", "5", "6", "7"],
 				},
 				{
 					question:
-						'Which player was known as "The Logo" and served as the NBA\'s silhouette model?',
+						'Quel joueur était surnommé "The Logo" et a servi de silhouette pour le logo de la NBA ?',
 					answer: "Jerry West",
 					choices: [
 						"Oscar Robertson",
@@ -37,7 +38,7 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: 'Who was nicknamed "The Answer"?',
+					question: 'Quel joueur était surnommé "The Answer" ?',
 					answer: "Allen Iverson",
 					choices: [
 						"Kobe Bryant",
@@ -48,7 +49,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Wilt Chamberlain scored 100 points in a single game. Against which team?",
+						"Contre quelle équipe Wilt Chamberlain a-t-il marqué 100 points dans un seul match ?",
 					answer: "New York Knicks",
 					choices: [
 						"Boston Celtics",
@@ -59,7 +60,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Who was the first player in NBA history to average 30 points and 20 rebounds per game in a season?",
+						"Quel joueur a été le premier à afficher en moyenne 30 points et 20 rebonds par match sur une saison ?",
 					answer: "Wilt Chamberlain",
 					choices: [
 						"Bill Russell",
@@ -69,7 +70,8 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "Magic Johnson played his entire career with which team?",
+					question:
+						"Magic Johnson a joué toute sa carrière avec quelle équipe ?",
 					answer: "Los Angeles Lakers",
 					choices: [
 						"Boston Celtics",
@@ -83,14 +85,14 @@ export const themeQuizzes: Quiz[] = [
 	},
 	{
 		id: "quiz-championships",
-		title: "Championship History",
+		title: "Historique des championnats",
 		category: "quiz",
 		difficulty: "Medium",
 		data: {
 			subType: "theme",
 			questions: [
 				{
-					question: "Which NBA franchise has won the most championships?",
+					question: "Quelle franchise NBA a remporté le plus de championnats ?",
 					answer: "Boston Celtics",
 					choices: [
 						"Los Angeles Lakers",
@@ -101,7 +103,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Which team ended a 52-year championship drought for the city of Cleveland in 2016?",
+						"Quelle équipe a mis fin à une disette de 52 ans sans titre pour la ville de Cleveland en 2016 ?",
 					answer: "Cleveland Cavaliers",
 					choices: [
 						"Cleveland Cavaliers",
@@ -112,13 +114,13 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"The Toronto Raptors won their first NBA Championship in which year?",
+						"En quelle année les Toronto Raptors ont-ils remporté leur premier titre NBA ?",
 					answer: "2019",
 					choices: ["2017", "2018", "2019", "2020"],
 				},
 				{
 					question:
-						"Who did the Dallas Mavericks defeat in the 2011 NBA Finals?",
+						"Qui les Dallas Mavericks ont-ils battu lors des Finales NBA 2011 ?",
 					answer: "Miami Heat",
 					choices: [
 						"Los Angeles Lakers",
@@ -129,13 +131,13 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"The Golden State Warriors won 3 championships in a 4-year span (2015–2018). Which year did they NOT win?",
+						"Les Golden State Warriors ont remporté 3 championnats en 4 ans (2015–2018). Quelle année n'ont-ils pas gagné ?",
 					answer: "2016",
 					choices: ["2015", "2016", "2017", "2018"],
 				},
 				{
 					question:
-						"Who was the head coach of the San Antonio Spurs during all 5 of their championships?",
+						"Qui était l'entraîneur des San Antonio Spurs pendant leurs 5 championnats ?",
 					answer: "Gregg Popovich",
 					choices: [
 						"Larry Brown",
@@ -146,7 +148,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Phil Jackson holds the record for most NBA championships as a head coach. How many did he win?",
+						"Phil Jackson détient le record du plus grand nombre de championnats remportés en tant qu'entraîneur principal. Combien en a-t-il remporté ?",
 					answer: "11",
 					choices: ["9", "10", "11", "12"],
 				},
@@ -155,14 +157,15 @@ export const themeQuizzes: Quiz[] = [
 	},
 	{
 		id: "quiz-records",
-		title: "Records & Milestones",
+		title: "Records et jalons",
 		category: "quiz",
 		difficulty: "Hard",
 		data: {
 			subType: "theme",
 			questions: [
 				{
-					question: "Who holds the NBA record for most career triple-doubles?",
+					question:
+						"Qui détient le record du plus grand nombre de triple-doubles en carrière en NBA ?",
 					answer: "Russell Westbrook",
 					choices: [
 						"Oscar Robertson",
@@ -172,7 +175,8 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "Who is the tallest player in NBA history at 7'7\"?",
+					question:
+						"Quel est le joueur le plus grand de l'histoire de la NBA (2,31 m / 7'7\") ?",
 					answer: "Gheorghe Muresan",
 					choices: [
 						"Yao Ming",
@@ -183,13 +187,13 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"What is the most points ever scored by a team in a single NBA game?",
+						"Quel est le plus grand nombre de points jamais marqués par une équipe dans un seul match NBA ?",
 					answer: "186",
 					choices: ["172", "180", "186", "193"],
 				},
 				{
 					question:
-						"Who holds the record for most assists in a single NBA game with 30?",
+						"Qui détient le record du plus grand nombre de passes décisives dans un seul match NBA (30) ?",
 					answer: "Scott Skiles",
 					choices: [
 						"Magic Johnson",
@@ -199,7 +203,8 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "Which player has the most career blocks in NBA history?",
+					question:
+						"Quel joueur détient le plus grand nombre de contres en carrière en NBA ?",
 					answer: "Hakeem Olajuwon",
 					choices: [
 						"Dikembe Mutombo",
@@ -210,13 +215,13 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Stephen Curry set the record for most three-pointers in a season with how many in 2015–16?",
+						"Combien de paniers à trois points Stephen Curry a-t-il réussi lors de la saison 2015–16, record pour une saison ?",
 					answer: "402",
 					choices: ["324", "366", "402", "431"],
 				},
 				{
 					question:
-						"Who holds the record for most rebounds in a single game with 55?",
+						"Qui détient le record du plus grand nombre de rebonds dans un seul match (55) ?",
 					answer: "Wilt Chamberlain",
 					choices: [
 						"Bill Russell",
@@ -230,7 +235,7 @@ export const themeQuizzes: Quiz[] = [
 	},
 	{
 		id: "quiz-draft",
-		title: "Draft & Rookies",
+		title: "Drafts & Recrues",
 		category: "quiz",
 		difficulty: "Medium",
 		data: {
@@ -238,7 +243,7 @@ export const themeQuizzes: Quiz[] = [
 			questions: [
 				{
 					question:
-						"Which player was selected first overall in the 2003 NBA Draft?",
+						"Quel joueur a été choisi en première position lors de la Draft NBA 2003 ?",
 					answer: "LeBron James",
 					choices: [
 						"Carmelo Anthony",
@@ -249,12 +254,13 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Michael Jordan was drafted in which position in the 1984 NBA Draft?",
+						"À quelle position Michael Jordan a-t-il été drafté lors de la Draft NBA 1984 ?",
 					answer: "3rd overall",
 					choices: ["1st overall", "2nd overall", "3rd overall", "5th overall"],
 				},
 				{
-					question: "Who won the NBA Rookie of the Year award in 2019–20?",
+					question:
+						"Qui a remporté le trophée de Rookie of the Year en 2019–20 ?",
 					answer: "Ja Morant",
 					choices: [
 						"Zion Williamson",
@@ -265,7 +271,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Kobe Bryant was drafted by which team before being traded to the Lakers?",
+						"Kobe Bryant a été drafté par quelle équipe avant d'être échangé aux Lakers ?",
 					answer: "Charlotte Hornets",
 					choices: [
 						"New Jersey Nets",
@@ -275,7 +281,7 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "Who was the #1 overall pick in the 1992 NBA Draft?",
+					question: "Qui a été le choix #1 à la Draft NBA 1992 ?",
 					answer: "Shaquille O'Neal",
 					choices: [
 						"Alonzo Mourning",
@@ -286,7 +292,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Dirk Nowitzki was drafted in 1998. Which team selected him?",
+						"Dirk Nowitzki a été drafté en 1998. Quelle équipe l'a sélectionné ?",
 					answer: "Milwaukee Bucks",
 					choices: [
 						"Dallas Mavericks",
@@ -300,14 +306,15 @@ export const themeQuizzes: Quiz[] = [
 	},
 	{
 		id: "quiz-teams",
-		title: "Teams & Franchises",
+		title: "Équipes et franchises",
 		category: "quiz",
 		difficulty: "Easy",
 		data: {
 			subType: "theme",
 			questions: [
 				{
-					question: "The Oklahoma City Thunder were formerly known as the…?",
+					question:
+						"Les Oklahoma City Thunder étaient auparavant connus sous le nom de… ?",
 					answer: "Seattle SuperSonics",
 					choices: [
 						"Vancouver Grizzlies",
@@ -317,7 +324,8 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "Which team plays its home games at Madison Square Garden?",
+					question:
+						"Quelle équipe joue ses matchs à domicile au Madison Square Garden ?",
 					answer: "New York Knicks",
 					choices: [
 						"Brooklyn Nets",
@@ -328,7 +336,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						'The "Bad Boys" nickname referred to which team from the late 1980s?',
+						'Le surnom "Bad Boys" faisait référence à quelle équipe à la fin des années 80 ?',
 					answer: "Detroit Pistons",
 					choices: [
 						"New York Knicks",
@@ -338,7 +346,7 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "Which team does Nikola Jokic play for?",
+					question: "Pour quelle équipe joue Nikola Jokic ?",
 					answer: "Denver Nuggets",
 					choices: [
 						"Phoenix Suns",
@@ -348,13 +356,14 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "The Memphis Grizzlies originally played in which city?",
+					question:
+						"Les Memphis Grizzlies ont joué à l'origine dans quelle ville ?",
 					answer: "Vancouver",
 					choices: ["Seattle", "Vancouver", "San Diego", "Kansas City"],
 				},
 				{
 					question:
-						"Which team retired the number 23 in honor of both Michael Jordan and LeBron James?",
+						"Quelle équipe a retiré le numéro 23 en l'honneur à la fois de Michael Jordan et de LeBron James ?",
 					answer: "No team has retired it for both",
 					choices: [
 						"Cleveland Cavaliers",
@@ -368,14 +377,15 @@ export const themeQuizzes: Quiz[] = [
 	},
 	{
 		id: "quiz-mvp",
-		title: "MVP Awards",
+		title: "Prix MVP",
 		category: "quiz",
 		difficulty: "Hard",
 		data: {
 			subType: "theme",
 			questions: [
 				{
-					question: "Who was the youngest player to win the NBA MVP award?",
+					question:
+						"Qui a été le plus jeune joueur à remporter le prix MVP en NBA ?",
 					answer: "Derrick Rose",
 					choices: [
 						"LeBron James",
@@ -386,24 +396,25 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Kareem Abdul-Jabbar holds the record for most MVP awards. How many did he win?",
+						"Combien de trophées MVP Kareem Abdul-Jabbar a-t-il remportés ?",
 					answer: "6",
 					choices: ["4", "5", "6", "7"],
 				},
 				{
 					question:
-						"Who was the first European-born player to win the NBA MVP?",
+						"Qui a été le premier joueur né en Europe à remporter le prix MVP en NBA ?",
 					answer: "Dirk Nowitzki",
 					choices: ["Steve Nash", "Dirk Nowitzki", "Pau Gasol", "Tony Parker"],
 				},
 				{
 					question:
-						"Stephen Curry became the first unanimous MVP in NBA history. In which season?",
+						"Stephen Curry est devenu le premier MVP unanime de l'histoire de la NBA lors de quelle saison ?",
 					answer: "2015–16",
 					choices: ["2014–15", "2015–16", "2016–17", "2017–18"],
 				},
 				{
-					question: "Which player won back-to-back MVPs in 2019 and 2020?",
+					question:
+						"Quel joueur a remporté les MVP consécutifs en 2019 et 2020 ?",
 					answer: "Giannis Antetokounmpo",
 					choices: [
 						"LeBron James",
@@ -414,7 +425,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Russell Westbrook won the 2017 MVP after averaging a triple-double. His PPG average that season was?",
+						"Russell Westbrook a remporté le MVP 2017 après avoir réalisé une moyenne en triple-double. Quelle était sa moyenne de points par match cette saison ?",
 					answer: "31.6",
 					choices: ["28.4", "30.2", "31.6", "33.1"],
 				},
@@ -423,7 +434,7 @@ export const themeQuizzes: Quiz[] = [
 	},
 	{
 		id: "quiz-goat",
-		title: "The GOAT Debate",
+		title: "Le débat du GOAT",
 		category: "quiz",
 		difficulty: "Easy",
 		data: {
@@ -431,7 +442,7 @@ export const themeQuizzes: Quiz[] = [
 			questions: [
 				{
 					question:
-						"LeBron James was drafted from which high school directly into the NBA?",
+						"LeBron James a été drafté depuis quel lycée directement en NBA ?",
 					answer: "St. Vincent-St. Mary High School",
 					choices: [
 						"Oak Hill Academy",
@@ -441,31 +452,31 @@ export const themeQuizzes: Quiz[] = [
 					],
 				},
 				{
-					question: "How many NBA Finals did Michael Jordan appear in?",
+					question: "Combien de Finales NBA Michael Jordan a-t-il disputées ?",
 					answer: "6",
 					choices: ["5", "6", "7", "8"],
 				},
 				{
 					question:
-						"LeBron James has won NBA championships with how many different teams?",
+						"Avec combien d'équipes différentes LeBron James a-t-il remporté des titres NBA ?",
 					answer: "3",
 					choices: ["1", "2", "3", "4"],
 				},
 				{
 					question:
-						"Michael Jordan's jersey number with the Chicago Bulls was?",
+						"Quel était le numéro de maillot de Michael Jordan chez les Chicago Bulls ?",
 					answer: "23",
 					choices: ["21", "23", "32", "45"],
 				},
 				{
 					question:
-						"In which year did LeBron James win his first NBA championship?",
+						"En quelle année LeBron James a-t-il remporté son premier championnat NBA ?",
 					answer: "2012",
 					choices: ["2011", "2012", "2013", "2016"],
 				},
 				{
 					question:
-						"Michael Jordan played briefly for which team after his first retirement?",
+						"Pour quelle équipe Michael Jordan a-t-il joué brièvement après sa première retraite ?",
 					answer: "Washington Wizards",
 					choices: [
 						"Miami Heat",

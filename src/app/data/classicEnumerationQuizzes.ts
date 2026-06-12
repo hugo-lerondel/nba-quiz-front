@@ -3,14 +3,14 @@ import type { Quiz } from "./quizData.ts";
 export const classicEnumerationQuizzes: Quiz[] = [
 	{
 		id: "consecutive-mvp-winners",
-		title: "Consecutive MVP Winners",
+		title: "MVP consécutifs",
 		category: "enumeration",
 		difficulty: "Medium",
 		data: {
 			subType: "classic",
 			prompt:
-				"Name all players who won two or more consecutive NBA MVP awards.",
-			hint: "There are 8 players total.",
+				"Nommez tous les joueurs qui ont remporté deux MVP NBA consécutifs.",
+			hint: "Il y a 8 joueurs au total.",
 			answers: [
 				"Bill Russell",
 				"Wilt Chamberlain",
@@ -25,13 +25,13 @@ export const classicEnumerationQuizzes: Quiz[] = [
 	},
 	{
 		id: "six-rings-players",
-		title: "Players with 6+ Championships",
+		title: "Joueurs avec 6+ titres",
 		category: "enumeration",
 		difficulty: "Easy",
 		data: {
 			subType: "classic",
-			prompt: "Name all players who won 6 or more NBA Championships.",
-			hint: "Think of the Boston Celtics dynasty and Michael Jordan.",
+			prompt: "Nommez tous les joueurs ayant remporté 6 titres NBA ou plus.",
+			hint: "Pensez aux dynasties des Boston Celtics et à Michael Jordan.",
 			answers: [
 				"Bill Russell",
 				"Sam Jones",
@@ -46,14 +46,14 @@ export const classicEnumerationQuizzes: Quiz[] = [
 	},
 	{
 		id: "triple-double-season",
-		title: "Triple-Double Season Averages",
+		title: "Moyennes en triple-double sur une saison",
 		category: "enumeration",
 		difficulty: "Hard",
 		data: {
 			subType: "classic",
 			prompt:
-				"Name all players who averaged a triple-double for an entire NBA season.",
-			hint: "Only a handful of players in NBA history have accomplished this.",
+				"Nommez tous les joueurs qui ont affiché une moyenne en triple-double sur une saison NBA entière.",
+			hint: "Seuls quelques joueurs ont accompli cela dans l'histoire de la NBA.",
 			answers: [
 				"Oscar Robertson",
 				"Russell Westbrook",
@@ -64,14 +64,14 @@ export const classicEnumerationQuizzes: Quiz[] = [
 	},
 	{
 		id: "all-star-game-mvp-repeat",
-		title: "Multiple All-Star Game MVPs",
+		title: "Multiples MVP du All-Star Game",
 		category: "enumeration",
 		difficulty: "Hard",
 		data: {
 			subType: "classic",
 			prompt:
-				"Name all players who have won 3 or more NBA All-Star Game MVP awards.",
-			hint: "LeBron James leads with 4.",
+				"Nommez tous les joueurs qui ont remporté 3 MVP ou plus au All-Star Game.",
+			hint: "LeBron James en a 4.",
 			answers: ["LeBron James", "Bob Pettit", "Kobe Bryant"],
 		},
 	},
