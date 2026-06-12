@@ -3,12 +3,12 @@ import type { Quiz, YearlyEnumerationQuiz } from "./quizData";
 export const yearlyEnumerationQuizzes: Quiz[] = [
 	{
 		id: "mvp-by-year",
-		title: "NBA MVP by Year",
+		title: "MVP de saison régulière",
 		category: "enumeration",
 		difficulty: "Medium",
 		data: {
 			subType: "yearly",
-			prompt: "Who won the NBA MVP award?",
+			prompt: "Qui a gagné le prix de MVP de la saison régulière ?",
 			entries: [
 				{ year: 2024, answer: "Nikola Jokic" },
 				{ year: 2023, answer: "Joel Embiid" },
@@ -84,12 +84,12 @@ export const yearlyEnumerationQuizzes: Quiz[] = [
 	},
 	{
 		id: "nba-champions-by-year",
-		title: "NBA Champions by Year",
+		title: "Equipe championne NBA",
 		category: "enumeration",
 		difficulty: "Medium",
 		data: {
 			subType: "yearly",
-			prompt: "Which team won the NBA Championship?",
+			prompt: "Quelle équipe a remporté le championnat NBA ?",
 			entries: [
 				{ year: 2024, answer: "Boston Celtics" },
 				{ year: 2023, answer: "Denver Nuggets" },
@@ -174,12 +174,12 @@ export const yearlyEnumerationQuizzes: Quiz[] = [
 	},
 	{
 		id: "finals-mvp-by-year",
-		title: "NBA Finals MVP by Year",
+		title: "MVP des finals NBA",
 		category: "enumeration",
 		difficulty: "Hard",
 		data: {
 			subType: "yearly",
-			prompt: "Who won the NBA Finals MVP?",
+			prompt: "Qui a gagné le MVP des finales ?",
 			entries: [
 				{ year: 2024, answer: "Jaylen Brown" },
 				{ year: 2023, answer: "Nikola Jokic" },
@@ -242,12 +242,13 @@ export const yearlyEnumerationQuizzes: Quiz[] = [
 	},
 	{
 		id: "scoring-title-by-year",
-		title: "NBA Scoring Champion by Year",
+		title: "Meilleur scoreur de la saison régulière",
 		category: "enumeration",
 		difficulty: "Hard",
 		data: {
 			subType: "yearly",
-			prompt: "Who won the NBA scoring title?",
+			prompt:
+				"Qui a gagné le titre de meilleur scoreur de la saison régulière ?",
 			entries: [
 				{ year: 2024, answer: "Luka Doncic" },
 				{ year: 2023, answer: "Joel Embiid" },
