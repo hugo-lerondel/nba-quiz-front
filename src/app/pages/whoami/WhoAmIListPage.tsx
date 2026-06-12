@@ -75,6 +75,7 @@ function PlayerCard({
 						? "rgba(255,255,255,0.12)"
 						: "rgba(255,255,255,0.06)",
 			}}
+			type={"button"}
 		>
 			<div className="flex items-center gap-4">
 				<div
@@ -142,6 +143,7 @@ export function WhoAmIListPage() {
 					<button
 						onClick={() => navigate("/")}
 						className="flex items-center gap-1.5 text-gray-400 hover:text-[#fbbf24] transition-colors text-sm"
+						type={"button"}
 					>
 						<ChevronLeft size={18} /> Retour
 					</button>

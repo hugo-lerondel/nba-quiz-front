@@ -93,6 +93,7 @@ export function QuizCard({ quiz, result, onClick }: QuizCardProps) {
 
 	return (
 		<button
+			type={"button"}
 			onClick={onClick}
 			className="w-full text-left rounded-xl p-5 border transition-all duration-200 hover:shadow-[0_0_20px_rgba(74,222,128,0.1)] group focus:outline-none"
 			style={{

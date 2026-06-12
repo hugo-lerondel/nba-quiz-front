@@ -35,6 +35,7 @@ export function QuizListView({
 					<button
 						onClick={onBack}
 						className="flex items-center gap-1.5 text-gray-400 hover:text-[#fbbf24] transition-colors text-sm"
+						type={"button"}
 					>
 						<ChevronLeft size={18} /> Retour
 					</button>

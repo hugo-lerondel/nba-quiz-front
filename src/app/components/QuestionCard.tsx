@@ -112,6 +112,7 @@ export function QuestionCard({
 
 						return (
 							<button
+								type={"button"}
 								key={choice}
 								onClick={() => !submitted && setSelected(choice)}
 								disabled={submitted}
@@ -264,6 +265,7 @@ export function QuestionCard({
 
 			{!submitted ? (
 				<button
+					type={"button"}
 					onClick={handleSubmit}
 					disabled={hasChoices ? !selected : !textInput.trim()}
 					className="w-full py-3 rounded-xl text-sm transition-opacity hover:opacity-90 focus:outline-none disabled:opacity-40"
@@ -284,6 +286,7 @@ export function QuestionCard({
 						color: "#08080f",
 						fontWeight: 700,
 					}}
+					type={"button"}
 				>
 					{index + 1 < total ? (
 						<>

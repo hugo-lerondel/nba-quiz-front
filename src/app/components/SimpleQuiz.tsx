@@ -15,7 +15,7 @@ export function SimpleQuiz({ quiz, onBack }: SimpleQuizProps) {
 	const data = quiz.data as QuizThemeData;
 
 	const [key, setKey] = useState(0);
-	const shuffled = useMemo(() => shuffle(data.questions), [key]); // eslint-disable-line react-hooks/exhaustive-deps
+	const shuffled = useMemo(() => shuffle(data.questions), [data.questions]);
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [correctCount, setCorrectCount] = useState(0);
 	const [done, setDone] = useState(false);
@@ -40,7 +40,7 @@ export function SimpleQuiz({ quiz, onBack }: SimpleQuizProps) {
 				completedAt: Date.now(),
 			});
 		}
-	}, [done]); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [done, correctCount, quiz.id, shuffled.length]);
 
 	const handleRetry = () => {
 		setKey((k) => k + 1);
@@ -59,6 +59,7 @@ export function SimpleQuiz({ quiz, onBack }: SimpleQuizProps) {
 					<button
 						onClick={onBack}
 						className="flex items-center gap-1.5 text-gray-400 hover:text-[#fbbf24] transition-colors text-sm"
+						type={"button"}
 					>
 						<ChevronLeft size={18} /> Back
 					</button>

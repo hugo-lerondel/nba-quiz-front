@@ -68,6 +68,7 @@ export function ScoreScreen({
 				onClick={onBack}
 				className="w-full py-3 rounded-xl text-sm border border-white/10 text-gray-400 hover:text-white transition-colors flex items-center justify-center gap-2 focus:outline-none"
 				style={{ backgroundColor: "#14141f" }}
+				type={"button"}
 			>
 				<List size={16} /> Retour à la liste
 			</button>

@@ -59,7 +59,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 		return () => {
 			if (autoRevealRef.current) clearInterval(autoRevealRef.current);
 		};
-	}, [solved, totalClues]);
+	}, [solved, totalClues, CLUE_REVEAL_INTERVAL]);
 
 	// Scroll to bottom when a new clue appears
 	useEffect(() => {
@@ -67,7 +67,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 			behavior: "smooth",
 			block: "nearest",
 		});
-	}, [visibleClues]);
+	}, []);
 
 	const handleGuess = useCallback(() => {
 		const trimmed = guess.trim();
@@ -104,7 +104,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 			setGuess("");
 			inputRef.current?.focus();
 		}
-	}, [guess, player.name, visibleClues, wrongGuesses]);
+	}, [guess, player.name, visibleClues, wrongGuesses, player.id]);
 
 	const handleKeyDown = (e: React.KeyboardEvent) => {
 		if (e.key === "Enter") {
@@ -146,6 +146,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 					<button
 						onClick={onBack}
 						className="flex items-center gap-1.5 text-gray-400 hover:text-[#fbbf24] transition-colors text-sm"
+						type={"button"}
 					>
 						<ChevronLeft size={18} /> Retour
 					</button>
@@ -173,13 +174,13 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 				{/* Clue progress bar */}
 				<div className="max-w-2xl mx-auto px-4 pb-3">
 					<div className="flex gap-1">
-						{Array.from({ length: totalClues }).map((_, i) => (
+						{player.clues.map((clue, index) => (
 							<div
-								key={i}
+								key={clue}
 								className="flex-1 h-1 rounded-full transition-all duration-500"
 								style={{
 									backgroundColor:
-										i < visibleClues
+										index < visibleClues
 											? solved
 												? "#4ade80"
 												: "#fbbf24"
@@ -196,7 +197,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 				<div className="flex-1 space-y-3">
 					{player.clues.slice(0, visibleClues).map((clue, i) => (
 						<div
-							key={i}
+							key={clue}
 							className="rounded-xl px-5 py-4 border border-white/8"
 							style={{
 								backgroundColor: "#14141f",
@@ -261,6 +262,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 						>
 							<input
 								ref={inputRef}
+								// biome-ignore lint/a11y/noAutofocus: idk how to focus this without autofocus and it causes no issues
 								autoFocus
 								type="text"
 								value={guess}
@@ -270,6 +272,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 								className="flex-1 bg-transparent text-white text-sm placeholder-gray-600 outline-none"
 							/>
 							<button
+								type="button"
 								onClick={handleGuess}
 								disabled={!guess.trim()}
 								className="px-3 py-1 rounded-lg text-xs transition-opacity hover:opacity-80 disabled:opacity-40 shrink-0"
@@ -363,6 +366,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 							onClick={handleReset}
 							className="w-full py-3 rounded-xl text-sm border border-white/10 text-gray-300 hover:border-[#fbbf24]/50 hover:text-[#fbbf24] transition-colors flex items-center justify-center gap-2 focus:outline-none"
 							style={{ backgroundColor: "#14141f" }}
+							type={"button"}
 						>
 							<RotateCcw size={16} /> Rejouer
 						</button>
@@ -370,6 +374,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 							onClick={onBack}
 							className="w-full py-3 rounded-xl text-sm border border-white/10 text-gray-400 hover:text-white transition-colors flex items-center justify-center gap-2 focus:outline-none"
 							style={{ backgroundColor: "#14141f" }}
+							type={"button"}
 						>
 							<List size={16} /> Choisir un autre joueur
 						</button>

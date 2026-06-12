@@ -25,7 +25,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 
 	useEffect(() => {
 		if (!finished) inputRef.current?.focus();
-	}, [found, finished]);
+	}, [finished]);
 
 	useEffect(() => {
 		if (finished) {
@@ -37,7 +37,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 				completedAt: Date.now(),
 			});
 		}
-	}, [finished]); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [finished, found.length, quiz.id, total]);
 
 	const submitAnswer = () => {
 		const trimmed = input.trim();
@@ -80,6 +80,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 					<button
 						onClick={onBack}
 						className="flex items-center gap-1.5 text-gray-400 hover:text-[#fbbf24] transition-colors text-sm"
+						type={"button"}
 					>
 						<ChevronLeft size={18} /> Retour
 					</button>
@@ -163,6 +164,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 									color: "#08080f",
 									fontWeight: 700,
 								}}
+								type={"button"}
 							>
 								OK
 							</button>
@@ -207,6 +209,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 
 				{!finished ? (
 					<button
+						type={"button"}
 						onClick={() => setGaveUp(true)}
 						className="w-full py-2.5 rounded-xl text-sm border border-white/10 text-gray-500 hover:text-gray-300 transition-colors focus:outline-none"
 						style={{ backgroundColor: "#14141f" }}
@@ -264,6 +267,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 							</p>
 						</div>
 						<button
+							type={"button"}
 							onClick={handleReset}
 							className="w-full py-3 rounded-xl text-sm border border-white/10 text-gray-300 hover:border-[#fbbf24]/50 hover:text-[#fbbf24] transition-colors flex items-center justify-center gap-2 focus:outline-none"
 							style={{ backgroundColor: "#14141f" }}
@@ -271,6 +275,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 							<RotateCcw size={16} /> Recommencer
 						</button>
 						<button
+							type={"button"}
 							onClick={onBack}
 							className="w-full py-3 rounded-xl text-sm border border-white/10 text-gray-400 hover:text-white transition-colors flex items-center justify-center gap-2 focus:outline-none"
 							style={{ backgroundColor: "#14141f" }}

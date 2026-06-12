@@ -31,6 +31,7 @@ export function HomePage() {
 						onClick={() => navigate("/enumeration")}
 						className="group text-left rounded-2xl p-7 border border-white/10 transition-all duration-300 hover:border-[#fbbf24] hover:shadow-[0_0_30px_rgba(251,191,36,0.12)] focus:outline-none focus:border-[#fbbf24]"
 						style={{ backgroundColor: "#14141f" }}
+						type={"button"}
 					>
 						<div
 							className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300 group-hover:bg-[#fbbf24]/20"
@@ -65,6 +66,7 @@ export function HomePage() {
 						onClick={() => navigate("/quiz")}
 						className="group text-left rounded-2xl p-7 border border-white/10 transition-all duration-300 hover:border-[#fbbf24] hover:shadow-[0_0_30px_rgba(251,191,36,0.12)] focus:outline-none focus:border-[#fbbf24]"
 						style={{ backgroundColor: "#14141f" }}
+						type={"button"}
 					>
 						<div
 							className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300 group-hover:bg-[#fbbf24]/20"
@@ -99,6 +101,7 @@ export function HomePage() {
 						onClick={() => navigate("/whoami")}
 						className="group text-left rounded-2xl p-7 border border-white/10 transition-all duration-300 hover:border-[#fbbf24] hover:shadow-[0_0_30px_rgba(251,191,36,0.12)] focus:outline-none focus:border-[#fbbf24]"
 						style={{ backgroundColor: "#14141f" }}
+						type={"button"}
 					>
 						<div
 							className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300 group-hover:bg-[#fbbf24]/20"

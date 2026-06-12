@@ -30,7 +30,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 
 	useEffect(() => {
 		inputRefs.current[data.entries[0]?.year]?.focus();
-	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+	}, [data.entries[0]?.year]);
 
 	const checkRow = (year: number) => {
 		if (results) return;
@@ -91,6 +91,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 					<button
 						onClick={onBack}
 						className="flex items-center gap-1.5 text-gray-400 hover:text-[#fbbf24] transition-colors text-sm"
+						type="button"
 					>
 						<ChevronLeft size={18} /> Retour
 					</button>
@@ -227,6 +228,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 							color: "#08080f",
 							fontWeight: 700,
 						}}
+						type={"button"}
 					>
 						Tout valider
 					</button>
@@ -256,6 +258,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 							onClick={handleReset}
 							className="w-full py-3 rounded-xl text-sm border border-white/10 text-gray-300 hover:border-[#fbbf24]/50 hover:text-[#fbbf24] transition-colors flex items-center justify-center gap-2 focus:outline-none"
 							style={{ backgroundColor: "#14141f" }}
+							type="button"
 						>
 							<RotateCcw size={16} /> Recommencer
 						</button>
@@ -263,6 +266,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 							onClick={onBack}
 							className="w-full py-3 rounded-xl text-sm border border-white/10 text-gray-400 hover:text-white transition-colors flex items-center justify-center gap-2 focus:outline-none"
 							style={{ backgroundColor: "#14141f" }}
+							type={"button"}
 						>
 							<List size={16} /> Retour à la liste
 						</button>
