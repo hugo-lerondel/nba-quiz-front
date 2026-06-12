@@ -1,12 +1,15 @@
+import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
-	base: "/nba-quiz-front/",
+	base: process.env.NODE_ENV === "/nba-quiz-front/" ? "/cv/" : "/",
 	plugins: [
 		react(),
+		tailwindcss(),
 		VitePWA({
 			registerType: "autoUpdate",
 			manifest: {
@@ -31,4 +34,11 @@ export default defineConfig({
 			},
 		}),
 	],
+	resolve: {
+		alias: {
+			// Alias @ to the src directory
+			"@": path.resolve(__dirname, "./src"),
+		},
+	},
+	assetsInclude: ["**/*.svg", "**/*.csv"],
 });
