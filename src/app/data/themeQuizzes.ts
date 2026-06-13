@@ -159,7 +159,7 @@ export const themeQuizzes: Quiz[] = [
 		id: "quiz-records",
 		title: "Records et jalons",
 		category: "quiz",
-		difficulty: "Hard",
+		difficulty: "Easy",
 		data: {
 			subType: "theme",
 			questions: [
