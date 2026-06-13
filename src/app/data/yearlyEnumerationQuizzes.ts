@@ -248,7 +248,7 @@ export const yearlyEnumerationQuizzes: Quiz[] = [
 		id: "defensive-player-of-the-year",
 		title: "Défenseur de l'année",
 		category: "enumeration",
-		difficulty: "Medium",
+		difficulty: "Hard",
 		data: {
 			subType: "yearly",
 			prompt: "Qui a gagné le prix de défenseur de l'année ?",

@@ -5,7 +5,7 @@ export const themeQuizzes: Quiz[] = [
 		id: "quiz-legends",
 		title: "Légendes de la NBA",
 		category: "quiz",
-		difficulty: "Medium",
+		difficulty: "Easy",
 		data: {
 			subType: "theme",
 			questions: [
@@ -87,7 +87,7 @@ export const themeQuizzes: Quiz[] = [
 		id: "quiz-championships",
 		title: "Historique des championnats",
 		category: "quiz",
-		difficulty: "Medium",
+		difficulty: "Easy",
 		data: {
 			subType: "theme",
 			questions: [
@@ -103,7 +103,7 @@ export const themeQuizzes: Quiz[] = [
 				},
 				{
 					question:
-						"Quelle équipe a mis fin à une disette de 52 ans sans titre pour la ville de Cleveland en 2016 ?",
+						"Quelle équipe a mis fin à une disette de 52 ans sans titre en 2016 ?",
 					answer: "Cleveland Cavaliers",
 					choices: [
 						"Cleveland Cavaliers",

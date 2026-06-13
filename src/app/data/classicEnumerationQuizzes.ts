@@ -2,6 +2,19 @@ import type { Quiz } from "./quizData.ts";
 
 export const classicEnumerationQuizzes: Quiz[] = [
 	{
+		id: "triple-double-season",
+		title: "Moyennes en triple-double sur une saison",
+		category: "enumeration",
+		difficulty: "Easy",
+		data: {
+			subType: "classic",
+			prompt:
+				"Nommez tous les joueurs qui ont affiché une moyenne en triple-double sur une saison NBA entière.",
+			hint: "Seuls quelques joueurs ont accompli cela dans l'histoire de la NBA.",
+			answers: ["Oscar Robertson", "Russell Westbrook", "Nikola Jokic"],
+		},
+	},
+	{
 		id: "consecutive-mvp-winners",
 		title: "MVP consécutifs",
 		category: "enumeration",
@@ -33,7 +46,7 @@ export const classicEnumerationQuizzes: Quiz[] = [
 		id: "six-rings-players",
 		title: "Joueurs avec 6+ titres",
 		category: "enumeration",
-		difficulty: "Easy",
+		difficulty: "Hard",
 		data: {
 			subType: "classic",
 			prompt: "Nommez tous les joueurs ayant remporté 6 titres NBA ou plus.",
@@ -56,19 +69,6 @@ export const classicEnumerationQuizzes: Quiz[] = [
 		},
 	},
 	{
-		id: "triple-double-season",
-		title: "Moyennes en triple-double sur une saison",
-		category: "enumeration",
-		difficulty: "Hard",
-		data: {
-			subType: "classic",
-			prompt:
-				"Nommez tous les joueurs qui ont affiché une moyenne en triple-double sur une saison NBA entière.",
-			hint: "Seuls quelques joueurs ont accompli cela dans l'histoire de la NBA.",
-			answers: ["Oscar Robertson", "Russell Westbrook", "Nikola Jokic"],
-		},
-	},
-	{
 		id: "all-star-game-mvp-repeat",
 		title: "Multiples MVP du All-Star Game",
 		category: "enumeration",
@@ -87,9 +87,11 @@ export const classicEnumerationQuizzes: Quiz[] = [
 				"LeBron James",
 				"Bob Cousy",
 				"Julius Erving",
+				"Isiah Thomas",
 				"Karl Malone",
 				"Magic Johnson",
 				"Allen Iverson",
+				"Russell Westbrook",
 				"Kevin Durant",
 				"Stephen Curry",
 			],
