@@ -16,10 +16,13 @@ export default defineConfig({
 				name: "HoopQuiz",
 				short_name: "HoopQuiz",
 				description: "Application de quiz NBA",
+				lang: "fr-FR",
+				start_url: "/nba-quiz-front/",
+				scope: "/nba-quiz-front/",
+				display: "standalone",
+				orientation: "portrait",
 				theme_color: "#08080f",
 				background_color: "#08080f",
-				display: "standalone",
-				start_url: "/",
 				icons: [
 					{
 						src: "pwa-192x192.png",
@@ -32,6 +35,12 @@ export default defineConfig({
 						sizes: "512x512",
 						type: "image/png",
 						purpose: "any",
+					},
+					{
+						src: "pwa-512x512-maskable.png",
+						sizes: "512x512",
+						type: "image/png",
+						purpose: "any maskable",
 					},
 				],
 			},
