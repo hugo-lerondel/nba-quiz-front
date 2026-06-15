@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Quiz, YearlyEnumerationQuiz } from "../data/quizData";
-import { normalize } from "../utils/quizHelpers";
+import { isMatch } from "../utils/quizHelpers";
 import { saveResult } from "../utils/storage";
 
 interface YearlyQuizProps {
@@ -26,6 +26,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 	const [results, setResults] = useState<Record<number, RowResult> | null>(
 		null,
 	);
+	const [focusedYear, setFocusedYear] = useState<number | null>(null);
 	const inputRefs = useRef<Record<number, HTMLInputElement | null>>({});
 
 	useEffect(() => {
@@ -37,17 +38,16 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 		const userAnswer = (inputs[year] ?? "").trim();
 		if (!userAnswer) return;
 		const entry = data.entries.find((e) => e.year === year)!;
-		const correct = normalize(userAnswer) === normalize(entry.answer);
+		const correct = isMatch(userAnswer, entry.answer);
 		setFeedbacks((prev) => ({
 			...prev,
 			[year]: correct ? "correct" : "wrong",
 		}));
 		if (correct) {
 			const currentIdx = data.entries.findIndex((e) => e.year === year);
-			const next = data.entries.slice(currentIdx + 1).find((e) => {
-				const fb = feedbacks[e.year];
-				return fb !== "correct";
-			});
+			const next = data.entries
+				.slice(currentIdx + 1)
+				.find((e) => feedbacks[e.year] !== "correct");
 			if (next) setTimeout(() => inputRefs.current[next.year]?.focus(), 0);
 		}
 	};
@@ -56,7 +56,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 		const final: Record<number, RowResult> = {};
 		data.entries.forEach((entry) => {
 			const userAnswer = (inputs[entry.year] ?? "").trim();
-			const correct = normalize(userAnswer) === normalize(entry.answer);
+			const correct = isMatch(userAnswer, entry.answer);
 			final[entry.year] = { userAnswer, correct };
 		});
 		setResults(final);
@@ -74,6 +74,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 		setInputs({});
 		setFeedbacks({});
 		setResults(null);
+		setFocusedYear(null);
 		setTimeout(() => inputRefs.current[data.entries[0]?.year]?.focus(), 0);
 	};
 
@@ -112,8 +113,8 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 					<p className="text-gray-300 text-sm">{data.prompt}</p>
 					{!results && (
 						<p className="text-gray-600 text-xs mt-1.5">
-							Entrée pour tester une réponse · "Tout valider" pour soumettre
-							définitivement
+							Entrée ou bouton OK pour valider une ligne · "Tout valider" pour
+							soumettre définitivement
 						</p>
 					)}
 				</div>
@@ -122,6 +123,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 					{data.entries.map((entry) => {
 						const result = results?.[entry.year];
 						const feedback = feedbacks[entry.year];
+						const isFocused = focusedYear === entry.year;
 
 						let borderColor = "rgba(255,255,255,0.06)";
 						if (result) {
@@ -132,6 +134,8 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 							borderColor = "rgba(74,222,128,0.3)";
 						} else if (feedback === "wrong") {
 							borderColor = "rgba(248,113,113,0.3)";
+						} else if (isFocused) {
+							borderColor = "rgba(251,191,36,0.4)";
 						}
 
 						return (
@@ -193,6 +197,12 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 													}));
 												}
 											}}
+											onFocus={() => setFocusedYear(entry.year)}
+											onBlur={() =>
+												setFocusedYear((prev) =>
+													prev === entry.year ? null : prev,
+												)
+											}
 											onKeyDown={(e) => {
 												if (e.key === "Enter") {
 													e.preventDefault();
@@ -205,6 +215,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 									)}
 								</div>
 
+								{/* Feedback icon (after submit) */}
 								{!result && feedback && (
 									<span className="shrink-0">
 										{feedback === "correct" ? (
@@ -213,6 +224,27 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 											<XCircle size={14} style={{ color: "#f87171" }} />
 										)}
 									</span>
+								)}
+
+								{/* Per-row OK button — visible only when the row is focused and not yet finalized */}
+								{!result && isFocused && (
+									<button
+										onMouseDown={(e) => {
+											// Prevent input blur before the click fires
+											e.preventDefault();
+											checkRow(entry.year);
+											inputRefs.current[entry.year]?.focus();
+										}}
+										className="shrink-0 px-2.5 py-1 rounded-lg text-xs transition-opacity hover:opacity-80"
+										style={{
+											backgroundColor: "#fbbf24",
+											color: "#08080f",
+											fontWeight: 700,
+										}}
+										type="button"
+									>
+										OK
+									</button>
 								)}
 							</div>
 						);

@@ -7,8 +7,36 @@ export function normalizeAccents(s: string) {
 		.toLowerCase()
 		.trim()
 		.normalize("NFD")
-		.replace(/[̀-ͯ]/g, "")
-		.replace(/\s+/g, " ");
+		.replaceAll(/[̀-ͯ]/g, "")
+		.replaceAll(/\s+/g, " ");
+}
+
+function levenshtein(a: string, b: string): number {
+	const m = a.length;
+	const n = b.length;
+	const dp: number[] = Array.from({ length: n + 1 }, (_, j) => j);
+	for (let i = 1; i <= m; i++) {
+		let prev = dp[0];
+		dp[0] = i;
+		for (let j = 1; j <= n; j++) {
+			const tmp = dp[j];
+			dp[j] =
+				a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, dp[j], dp[j - 1]);
+			prev = tmp;
+		}
+	}
+	return dp[n];
+}
+
+export function isMatch(input: string, answer: string): boolean {
+	const a = normalizeAccents(input);
+	const b = normalizeAccents(answer);
+	if (a === b) return true;
+	const maxLen = Math.max(a.length, b.length);
+	if (maxLen === 0) return true;
+	// Minimum length threshold: very short answers require exact match
+	if (maxLen < 4) return a === b;
+	return 1 - levenshtein(a, b) / maxLen >= 0.9;
 }
 
 export function shuffle<T>(arr: T[]): T[] {
