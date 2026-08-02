@@ -1,7 +1,7 @@
 import { CheckCircle, ChevronLeft, List, RotateCcw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { ClassicEnumerationQuiz, Quiz } from "../data/quizData";
-import { normalize } from "../utils/quizHelpers";
+import { isAnswerMatch } from "../utils/quizHelpers";
 import { saveResult } from "../utils/storage";
 
 interface ClassicQuizProps {
@@ -42,9 +42,7 @@ export function ClassicQuiz({ quiz, data, onBack }: ClassicQuizProps) {
 	const submitAnswer = () => {
 		const trimmed = input.trim();
 		if (!trimmed) return;
-		const normInput = normalize(trimmed);
-		const normAnswers = data.answers.map(normalize);
-		const matchIndex = normAnswers.findIndex((a) => a === normInput);
+		const matchIndex = data.answers.findIndex((a) => isAnswerMatch(trimmed, a));
 		if (matchIndex !== -1) {
 			const canonical = data.answers[matchIndex];
 			if (found.includes(canonical)) {

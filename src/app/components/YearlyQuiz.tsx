@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { Quiz, YearlyEnumerationQuiz } from "../data/quizData";
-import { isMatch } from "../utils/quizHelpers";
+import { isAnswerMatch } from "../utils/quizHelpers";
 import { saveResult } from "../utils/storage";
 
 interface YearlyQuizProps {
@@ -38,7 +38,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 		const userAnswer = (inputs[year] ?? "").trim();
 		if (!userAnswer) return;
 		const entry = data.entries.find((e) => e.year === year)!;
-		const correct = isMatch(userAnswer, entry.answer);
+		const correct = isAnswerMatch(userAnswer, entry.answer);
 		setFeedbacks((prev) => ({
 			...prev,
 			[year]: correct ? "correct" : "wrong",
@@ -56,7 +56,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 		const final: Record<number, RowResult> = {};
 		data.entries.forEach((entry) => {
 			const userAnswer = (inputs[entry.year] ?? "").trim();
-			const correct = isMatch(userAnswer, entry.answer);
+			const correct = isAnswerMatch(userAnswer, entry.answer);
 			final[entry.year] = { userAnswer, correct };
 		});
 		setResults(final);

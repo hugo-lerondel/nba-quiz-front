@@ -1,7 +1,7 @@
 import { CheckCircle, ChevronRight, XCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { QuizQuestion } from "../data/quizData";
-import { normalize } from "../utils/quizHelpers";
+import { isAnswerMatch, isMatch, normalize } from "../utils/quizHelpers";
 
 interface QuestionCardProps {
 	question: QuizQuestion;
@@ -28,8 +28,8 @@ export function QuestionCard({
 
 	const isCorrect = submitted
 		? hasChoices
-			? normalize(selected ?? "") === normalize(question.answer)
-			: normalize(textInput) === normalize(question.answer)
+			? isMatch(selected ?? "", question.answer)
+			: isAnswerMatch(textInput, question.answer)
 		: false;
 
 	const handleSubmit = () => {

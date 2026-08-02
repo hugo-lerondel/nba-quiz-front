@@ -1,5 +1,5 @@
 export function normalize(s: string) {
-	return s.toLowerCase().trim().replace(/\s+/g, " ");
+	return normalizeAccents(s.toLowerCase().trim().replace(/\s+/g, " "));
 }
 
 export function normalizeAccents(s: string) {
@@ -28,15 +28,46 @@ function levenshtein(a: string, b: string): number {
 	return dp[n];
 }
 
-export function isMatch(input: string, answer: string): boolean {
-	const a = normalizeAccents(input);
-	const b = normalizeAccents(answer);
+function fuzzy(a: string, b: string): boolean {
 	if (a === b) return true;
 	const maxLen = Math.max(a.length, b.length);
 	if (maxLen === 0) return true;
-	// Minimum length threshold: very short answers require exact match
 	if (maxLen < 4) return a === b;
 	return 1 - levenshtein(a, b) / maxLen >= 0.9;
+}
+
+export function isMatch(
+	input: string,
+	answer: string,
+	normalizeFn = normalize,
+): boolean {
+	return fuzzy(normalizeFn(input), normalizeFn(answer));
+}
+
+/**
+ * Like isMatch, but also accepts a single first or last word of the answer.
+ * e.g. "Curry" matches "Stephen Curry", "Giannis" matches "Giannis Antetokoumpo".
+ * Only applies when the input is a single word of at least 3 chars and the answer has multiple words.
+ */
+export function isAnswerMatch(input: string, answer: string): boolean {
+	const normInput = normalize(input);
+	const normAnswer = normalize(answer);
+
+	if (fuzzy(normInput, normAnswer)) return true;
+
+	// Partial match only for single-word inputs (no spaces)
+	if (normInput.includes(" ") || normInput.length < 3) return false;
+
+	const words = normAnswer.split(" ");
+	if (words.length < 2) return false;
+
+	const first = words[0];
+	const last = words[words.length - 1];
+
+	if (first.length >= 3 && fuzzy(normInput, first)) return true;
+	if (last.length >= 3 && fuzzy(normInput, last)) return true;
+
+	return false;
 }
 
 export function shuffle<T>(arr: T[]): T[] {
