@@ -22,7 +22,7 @@ bun run test:e2e     # playwright e2e tests (auto-starts dev server)
 bun run test:e2e:ui  # playwright e2e tests in interactive UI mode
 ```
 
-E2e tests live under `e2e/` (Playwright, config in `playwright.config.ts`), run via `bun run test:e2e` (auto-starts the dev server). One-time setup: `bunx playwright install chromium` before the first run. Lefthook also runs the full e2e suite as a `pre-push` hook — see below. There is no unit test suite/framework configured (no vitest/jest).
+E2e tests live under `e2e/` (Playwright, config in `playwright.config.ts`), split into `e2e/desktop/` and `e2e/mobile/`, run via `bun run test:e2e` (auto-starts the dev server). One-time setup: `bunx playwright install chromium` before the first run. Lefthook also runs the full e2e suite as a `pre-push` hook — see below. There is no unit test suite/framework configured (no vitest/jest).
 
 Biome is the sole linter/formatter (tabs, double quotes, import organization on save/check — see `biome.json`). Lefthook runs `biome check` on staged `*.{ts,tsx,js,jsx,json}` files as a pre-commit hook, and `bun run test:e2e` as a `pre-push` hook (`lefthook.yml`); run `bun run prepare` (or reinstall deps, which triggers it) if hooks aren't active locally.
 
@@ -96,11 +96,19 @@ The app is dark-only (no theme toggle). The real palette is **hardcoded per-comp
 
 ### E2E tests (`e2e/`)
 
-One spec file per game flow:
+Two Playwright projects, defined in `playwright.config.ts`, each with its own `testDir` — `bun run test:e2e` runs both by default:
+- `desktop` — `e2e/desktop/`, `devices["Desktop Chrome"]`.
+- `mobile` — `e2e/mobile/`, `devices["Pixel 7"]` (mobile viewport + touch emulation).
+
+Run a single project with `bunx playwright test --project=desktop` (or `=mobile`).
+
+One spec file per game flow, duplicated across both folders:
 - `enumeration.spec.ts` — yearly enumeration
 - `enumeration-classic.spec.ts` — classic enumeration
 - `quiz.spec.ts` — theme quiz (multiple choice)
 - `whoami.spec.ts` — Qui suis-je
+
+The `desktop` and `mobile` versions of a spec run the identical flow to catch responsive layout regressions on phone-sized screens; keep them in sync by hand (no shared/parameterized spec) when editing a flow. `e2e/mobile/whoami.spec.ts` has one extra mobile-only test: it uses `page.clock` to fast-forward through several of `whoami-jordan`'s clue auto-reveals (no real wall-clock wait), shrinks the viewport to roughly the space left above a phone's software keyboard, and — without performing any scroll itself — asserts the guess input and the first clue are both still on screen. This guards the fixed-height/independently-scrolling layout in `WhoAmIGame.tsx` (see Styling/Architecture) against regressing back to whole-page scroll, where enough accumulated clue cards pushed the input far below the fold. Playwright can't trigger a real OS keyboard, so the shrunk viewport is a deliberate approximation, not a substitute for manual testing on a real device.
 
 Run via `bun run test:e2e` (headless) or `bun run test:e2e:ui` (Playwright's interactive UI mode, useful for debugging a single spec).
 

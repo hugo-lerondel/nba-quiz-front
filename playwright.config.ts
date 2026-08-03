@@ -12,8 +12,14 @@ export default defineConfig({
 	},
 	projects: [
 		{
-			name: "chromium",
+			name: "desktop",
+			testDir: "./e2e/desktop",
 			use: { ...devices["Desktop Chrome"] },
+		},
+		{
+			name: "mobile",
+			testDir: "./e2e/mobile",
+			use: { ...devices["Pixel 7"] },
 		},
 	],
 	webServer: {

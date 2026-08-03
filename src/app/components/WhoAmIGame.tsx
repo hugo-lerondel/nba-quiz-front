@@ -119,12 +119,12 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 
 	return (
 		<div
-			className="min-h-screen flex flex-col"
+			className="h-[100dvh] flex flex-col overflow-hidden"
 			style={{ backgroundColor: "#08080f" }}
 		>
 			{/* Header */}
 			<header
-				className="sticky top-0 z-10 border-b border-white/5"
+				className="shrink-0 border-b border-white/5"
 				style={{ backgroundColor: "#08080f" }}
 			>
 				<div className="max-w-2xl mx-auto px-4 py-4 flex items-center gap-4">
@@ -177,9 +177,10 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 				</div>
 			</header>
 
-			<main className="flex-1 max-w-2xl mx-auto w-full px-4 py-6 flex flex-col gap-4">
-				{/* Clue cards */}
-				<div className="flex-1 space-y-3">
+			<main className="flex-1 min-h-0 max-w-2xl mx-auto w-full px-4 py-6 flex flex-col gap-4 overflow-y-auto">
+				{/* Clue cards — the only scrollable region, so the input below always
+				stays on screen even when a mobile keyboard shrinks the viewport */}
+				<div className="flex-1 min-h-0 overflow-y-auto space-y-3">
 					{player.clues.slice(0, visibleClues).map((clue, i) => (
 						<div
 							key={clue}
@@ -209,7 +210,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 
 				{/* Next clue countdown */}
 				{!solved && visibleClues < totalClues && (
-					<p className="text-center text-gray-600 text-xs">
+					<p className="shrink-0 text-center text-gray-600 text-xs">
 						Prochain indice dans quelques secondes… ({totalClues - visibleClues}{" "}
 						restant{totalClues - visibleClues > 1 ? "s" : ""})
 					</p>
@@ -217,7 +218,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 
 				{/* Wrong guesses */}
 				{wrongGuesses.length > 0 && !solved && (
-					<div className="flex flex-wrap gap-2">
+					<div className="shrink-0 flex flex-wrap gap-2">
 						{wrongGuesses.map((w) => (
 							<span
 								key={w}
@@ -237,7 +238,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 
 				{/* Input */}
 				{!solved ? (
-					<div className="space-y-2">
+					<div className="shrink-0 space-y-2">
 						<div
 							className="flex gap-2 rounded-xl px-4 py-3 border transition-colors"
 							style={{
@@ -279,7 +280,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 					</div>
 				) : (
 					/* Victory screen */
-					<div className="space-y-3">
+					<div className="shrink-0 space-y-3">
 						<div
 							className="rounded-2xl p-6 text-center border"
 							style={{
