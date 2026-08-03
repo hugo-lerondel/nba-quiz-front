@@ -11,7 +11,8 @@ Application de quiz NBA — Progressive Web App built with React & TypeScript.
 | [Vite](https://vite.dev) | Build tool & dev server |
 | [vite-plugin-pwa](https://vite-pwa-org.netlify.app) | PWA support (service worker, manifest) |
 | [Biome](https://biomejs.dev) | Linter & formatter |
-| [Lefthook](https://github.com/evilmartians/lefthook) | Git hooks (pre-commit lint) |
+| [Playwright](https://playwright.dev) | End-to-end testing |
+| [Lefthook](https://github.com/evilmartians/lefthook) | Git hooks (pre-commit lint, pre-push e2e tests) |
 
 ## Getting Started
 
@@ -33,6 +34,9 @@ bun run dev
 | `bun run lint` | Run Biome checks |
 | `bun run lint:fix` | Run Biome checks and auto-fix |
 | `bun run format` | Format all files with Biome |
+| `bun run test:e2e` | Run Playwright e2e tests (auto-starts the dev server) |
+
+> One-time setup before the first `bun run test:e2e`: `bunx playwright install chromium`. Also runs automatically on `git push` via the Lefthook `pre-push` hook.
 
 ## Deployment
 

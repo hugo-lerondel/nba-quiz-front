@@ -18,11 +18,13 @@ bun run preview      # preview production build
 bun run lint         # biome check .
 bun run lint:fix     # biome check --write .
 bun run format       # biome format --write .
+bun run test:e2e     # playwright e2e tests (auto-starts dev server)
+bun run test:e2e:ui  # playwright e2e tests in interactive UI mode
 ```
 
-There is no test suite/framework configured in this repo (no vitest/jest, no test files).
+E2e tests live under `e2e/` (Playwright, config in `playwright.config.ts`), run via `bun run test:e2e` (auto-starts the dev server). One-time setup: `bunx playwright install chromium` before the first run. Lefthook also runs the full e2e suite as a `pre-push` hook — see below. There is no unit test suite/framework configured (no vitest/jest).
 
-Biome is the sole linter/formatter (tabs, double quotes, import organization on save/check — see `biome.json`). Lefthook runs `biome check` on staged `*.{ts,tsx,js,jsx,json}` files as a pre-commit hook (`lefthook.yml`); run `bun run prepare` (or reinstall deps, which triggers it) if hooks aren't active locally.
+Biome is the sole linter/formatter (tabs, double quotes, import organization on save/check — see `biome.json`). Lefthook runs `biome check` on staged `*.{ts,tsx,js,jsx,json}` files as a pre-commit hook, and `bun run test:e2e` as a `pre-push` hook (`lefthook.yml`); run `bun run prepare` (or reinstall deps, which triggers it) if hooks aren't active locally.
 
 ## Architecture
 
@@ -69,3 +71,19 @@ Tailwind CSS v4 via `@tailwindcss/vite` (no `tailwind.config.js` — config live
 ### PWA
 
 `vite-plugin-pwa` (`vite.config.ts`) generates the manifest and service worker (`autoUpdate`). Icons/manifest fields are defined inline in the Vite config, not in a separate `manifest.json` — edit them there.
+
+### E2E tests (`e2e/`)
+
+One spec file per game flow:
+- `enumeration.spec.ts` — yearly enumeration
+- `enumeration-classic.spec.ts` — classic enumeration
+- `quiz.spec.ts` — theme quiz (multiple choice)
+- `whoami.spec.ts` — Qui suis-je
+
+Run via `bun run test:e2e` (headless) or `bun run test:e2e:ui` (Playwright's interactive UI mode, useful for debugging a single spec).
+
+Conventions:
+- Locators: role/text on visible French UI text, no `data-testid`.
+- Prefer stable identifiers (quiz title) over list position; exception: the WhoAmI list hides player names until solved, so the first player card is targeted by position instead.
+- Avoid hardcoding counts that grow over time (e.g. total yearly entries, or a quiz's exact question count) — anchor assertions on what's actually being tested (e.g. the numerator of a score, not the denominator).
+- The theme quiz (`SimpleQuiz.tsx`) shuffles its questions on every run — `quiz.spec.ts` matches the currently-displayed question against a known question→answer table rather than assuming a fixed order.

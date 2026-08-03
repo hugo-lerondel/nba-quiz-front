@@ -3,3 +3,8 @@ pre-commit:
     lint:
       glob: "*.{ts,tsx,js,jsx,json}"
       run: npx biome check --no-errors-on-unmatched {staged_files}
+
+pre-push:
+  commands:
+    e2e:
+      run: bun run test:e2e
