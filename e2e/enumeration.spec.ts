@@ -20,16 +20,27 @@ test("parcourt le flow Énumération jusqu'à la fin du premier quiz", async ({
 			.last()
 			.getByPlaceholder("Votre réponse…");
 
-	await rowInput(2024).fill("Nikola Jokic");
+	// "Jokic" is a curated alias for "Nikola Jokic" (src/app/data/answerAliases.ts) —
+	// proves alias-based matching works end-to-end.
+	await rowInput(2024).fill("Jokic");
 	await rowInput(2024).press("Enter");
 
 	await rowInput(2023).fill("Joel Embiid");
 	await rowInput(2023).press("Enter");
 
+	// "Harden" has no curated alias for "James Harden" (2018 MVP), so under
+	// the new strict-by-default rule this attempt is deliberately left
+	// wrong. The score assertion below proves it isn't silently counted
+	// correct the way the old generic partial-name rule would have.
+	await rowInput(2018).fill("Harden");
+	await rowInput(2018).press("Enter");
+
 	await page.getByRole("button", { name: "Tout valider" }).click();
 
 	await expect(page.getByText("Score final")).toBeVisible();
-	// Assert only the numerator (correct answers); the denominator (total
-	// entries) grows over time as new years are added to the quiz data.
+	// Only 2024 (via the "Jokic" alias) and 2023 (full canonical name) count
+	// as correct; the unaliased "Harden" attempt for 2018 does not. Only the
+	// numerator is asserted; the denominator grows over time as new years
+	// are added to the quiz data.
 	await expect(page.getByText(/^2\/\d+$/)).toBeVisible();
 });

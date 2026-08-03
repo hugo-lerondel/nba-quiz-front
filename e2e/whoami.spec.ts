@@ -22,7 +22,9 @@ test("parcourt le flow Qui suis-je jusqu'à la victoire sur le premier joueur", 
 	const guessInput = page.getByPlaceholder(
 		"Qui suis-je ? (Entrée pour valider)",
 	);
-	await guessInput.fill("Michael Jordan");
+	// "Jordan" is a curated alias for "Michael Jordan" (src/app/data/answerAliases.ts) —
+	// proves the unified matching (Task 2) accepts it here too.
+	await guessInput.fill("Jordan");
 	await guessInput.press("Enter");
 
 	await expect(page.getByText("Bravo !")).toBeVisible();

@@ -1,21 +1,12 @@
 import { ChevronLeft, List, RotateCcw, Timer, Trophy, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { WhoAmIPlayer } from "../data/quizData";
-import { formatTime } from "../utils/quizHelpers";
+import { formatTime, isAnswerMatch, normalize } from "../utils/quizHelpers";
 import { saveResult } from "../utils/storage";
 
 interface WhoAmIGameProps {
 	player: WhoAmIPlayer;
 	onBack: () => void;
-}
-
-function normalize(s: string) {
-	return s
-		.toLowerCase()
-		.trim()
-		.normalize("NFD")
-		.replace(/[̀-ͯ]/g, "")
-		.replace(/\s+/g, " ");
 }
 
 export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
@@ -73,14 +64,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 		const trimmed = guess.trim();
 		if (!trimmed) return;
 
-		const normGuess = normalize(trimmed);
-		const normAnswer = normalize(player.name);
-
-		// Accept last name alone or full name
-		const lastNames = normAnswer.split(" ");
-		const isCorrect =
-			normGuess === normAnswer ||
-			lastNames.some((part) => part.length > 3 && normGuess === part);
+		const isCorrect = isAnswerMatch(trimmed, player.name);
 
 		if (isCorrect) {
 			const t = Date.now() - startRef.current;
@@ -98,6 +82,7 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 				completedAt: Date.now(),
 			});
 		} else {
+			const normGuess = normalize(trimmed);
 			if (!wrongGuesses.map(normalize).includes(normGuess)) {
 				setWrongGuesses((prev) => [...prev, trimmed]);
 			}

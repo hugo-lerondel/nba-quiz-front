@@ -58,7 +58,11 @@ Category pages render a small dispatcher component that switches on `data.subTyp
 
 ### Answer matching (`src/app/utils/quizHelpers.ts`)
 
-Free-text answers aren't matched with strict equality. `normalize`/`normalizeAccents` strip case, whitespace, and accents; `isMatch` adds fuzzy (Levenshtein-based, ≥90% similarity) matching; `isAnswerMatch` additionally accepts a single first/last name matching a multi-word answer (e.g. "Curry" matches "Stephen Curry"). Use `isAnswerMatch` for player-name-style answers and `isMatch` for exact-ish string answers. This file also holds `shuffle`, `formatTime`, and the `difficultyColors` palette shared by difficulty badges.
+`normalize`/`normalizeAccents` strip case, whitespace, and accents. `isMatch` adds fuzzy (Levenshtein-based, ≥90% similarity) matching and is used for MCQ choice validation in `QuestionCard.tsx`, where the selected value is always one of the exact provided choices. `isAnswerMatch` is used for free-text player-name-style answers (`YearlyQuiz.tsx`, `ClassicQuiz.tsx`, `WhoAmIGame.tsx`, and `QuestionCard.tsx`'s non-MCQ branch — currently unreachable since every theme question has `choices`) and requires an exact match once normalized — no typo tolerance, no automatic partial (first/last name) matching — *unless* the answer has a curated alias.
+
+Aliases live in `src/app/data/answerAliases.ts`, a `Record<string, string[]>` mapping a canonical answer to shorter accepted forms (e.g. `"Nikola Jokic": ["Jokic"]`). Only add an alias when it identifies that answer unambiguously among **all** answers in the app, not just within one quiz — e.g. "Malone" is absent because both "Karl Malone" and "Moses Malone" are MVP-by-year answers, and "Nikola" is absent for "Nikola Jokic" because several NBA players share that first name. The table is curated by hand and not exhaustive; most answers have no alias and must be typed in full (case/accents still ignored).
+
+This file also holds `shuffle`, `formatTime`, and the `difficultyColors` palette shared by difficulty badges.
 
 ### Results persistence (`src/app/utils/storage.ts`)
 

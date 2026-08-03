@@ -1,3 +1,5 @@
+import { ANSWER_ALIASES } from "../data/answerAliases";
+
 export function normalize(s: string) {
 	return normalizeAccents(s.toLowerCase().trim().replace(/\s+/g, " "));
 }
@@ -44,30 +46,29 @@ export function isMatch(
 	return fuzzy(normalizeFn(input), normalizeFn(answer));
 }
 
+// Aliases keyed by normalized answer, so accent/case variants of the same
+// canonical answer (different quiz entries sometimes spell a name slightly
+// differently) share the same alias entry.
+const normalizedAliasLookup: Record<string, string[]> = Object.fromEntries(
+	Object.entries(ANSWER_ALIASES).map(([answer, aliases]) => [
+		normalize(answer),
+		aliases,
+	]),
+);
+
 /**
- * Like isMatch, but also accepts a single first or last word of the answer.
- * e.g. "Curry" matches "Stephen Curry", "Giannis" matches "Giannis Antetokoumpo".
- * Only applies when the input is a single word of at least 3 chars and the answer has multiple words.
+ * Strict match: the input must equal the answer (case/accents ignored), or
+ * equal one of the answer's curated aliases in ANSWER_ALIASES
+ * (src/app/data/answerAliases.ts). No typo tolerance, no automatic partial
+ * (first/last name) matching — aliases must be explicitly curated per
+ * answer, since a generic rule can't tell a safe short answer (e.g. "Shai")
+ * from an ambiguous one (e.g. "Nikola", shared by several NBA players).
  */
 export function isAnswerMatch(input: string, answer: string): boolean {
 	const normInput = normalize(input);
-	const normAnswer = normalize(answer);
-
-	if (fuzzy(normInput, normAnswer)) return true;
-
-	// Partial match only for single-word inputs (no spaces)
-	if (normInput.includes(" ") || normInput.length < 3) return false;
-
-	const words = normAnswer.split(" ");
-	if (words.length < 2) return false;
-
-	const first = words[0];
-	const last = words[words.length - 1];
-
-	if (first.length >= 3 && fuzzy(normInput, first)) return true;
-	if (last.length >= 3 && fuzzy(normInput, last)) return true;
-
-	return false;
+	if (normInput === normalize(answer)) return true;
+	const aliases = normalizedAliasLookup[normalize(answer)] ?? [];
+	return aliases.some((alias) => normInput === normalize(alias));
 }
 
 export function shuffle<T>(arr: T[]): T[] {
