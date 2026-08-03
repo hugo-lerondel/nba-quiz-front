@@ -27,6 +27,21 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 
 	const totalClues = player.clues.length;
 
+	// `100dvh` doesn't shrink for the on-screen keyboard (only for browser
+	// chrome like the URL bar) on either iOS Safari or Chrome, so the layout
+	// never actually reacted to the keyboard opening — only `visualViewport`
+	// does. Track it in JS and use that as the container height instead.
+	const [viewportHeight, setViewportHeight] = useState(
+		() => window.visualViewport?.height ?? window.innerHeight,
+	);
+	useEffect(() => {
+		const vv = window.visualViewport;
+		if (!vv) return;
+		const handleResize = () => setViewportHeight(vv.height);
+		vv.addEventListener("resize", handleResize);
+		return () => vv.removeEventListener("resize", handleResize);
+	}, []);
+
 	// Tick timer
 	useEffect(() => {
 		if (solved) return;
@@ -119,8 +134,8 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 
 	return (
 		<div
-			className="h-[100dvh] flex flex-col overflow-hidden"
-			style={{ backgroundColor: "#08080f" }}
+			className="flex flex-col overflow-hidden"
+			style={{ backgroundColor: "#08080f", height: viewportHeight }}
 		>
 			{/* Header */}
 			<header

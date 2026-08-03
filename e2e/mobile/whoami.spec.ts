@@ -67,21 +67,30 @@ test("le champ de réponse reste visible quand plusieurs indices se sont accumul
 	// before answering.
 	await page.clock.runFor(4 * 8_000 + 500);
 
-	// Playwright can't trigger a real OS virtual keyboard, but this
-	// approximates what one leaves behind: a viewport shrunk down to roughly
-	// the space visible above a phone's software keyboard.
-	const original = page.viewportSize();
-	if (!original) throw new Error("viewport size unavailable in this project");
-	await page.setViewportSize({ width: original.width, height: 400 });
+	// Playwright has no way to open a real OS keyboard, and resizing the page
+	// viewport (page.setViewportSize) doesn't reproduce one either: on both
+	// iOS Safari and Chrome, an on-screen keyboard shrinks
+	// `window.visualViewport` but leaves the CSS layout viewport — and `dvh`
+	// units — untouched. So instead we shrink `visualViewport` directly and
+	// fire the same "resize" event the app listens for, which is the actual
+	// signal a real keyboard opening sends.
+	const keyboardOpenHeight = 400;
+	await page.evaluate((height) => {
+		const vv = window.visualViewport as VisualViewport;
+		Object.defineProperty(vv, "height", { value: height, configurable: true });
+		vv.dispatchEvent(new Event("resize"));
+	}, keyboardOpenHeight);
 
-	// No scrolling performed yet, so this asserts the layout itself keeps the
-	// input on screen — it must not be positioned below the fold purely as a
-	// side effect of 5 clue cards being rendered above it. On the old
-	// min-h-screen/whole-page-scroll layout the input ended up far below the
-	// fold here (reachable only after scrolling past all the clues), which is
-	// the "le clavier décale tout" symptom reported on mobile.
-	await expect(guessInput).toBeInViewport();
+	// No scrolling performed, so this checks the layout reacted on its own:
+	// the input must not be positioned below the visible (post-"keyboard")
+	// area purely as a side effect of 5 clue cards being rendered above it.
+	// Without a `visualViewport`-driven height (relying on `dvh` alone, which
+	// never shrinks for the keyboard), the input ended up far below this
+	// line — reachable only by scrolling past all the clues, which is the
+	// "le clavier décale tout" symptom reported on mobile.
+	const inputBottom = await guessInput.evaluate(
+		(el) => el.getBoundingClientRect().bottom,
+	);
+	expect(inputBottom).toBeLessThanOrEqual(keyboardOpenHeight);
 	await expect(firstClue).toBeInViewport();
-
-	await page.setViewportSize(original);
 });
