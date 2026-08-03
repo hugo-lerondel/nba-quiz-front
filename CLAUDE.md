@@ -72,6 +72,24 @@ Results are stored in `localStorage` under a single versioned key (`nba-quiz-res
 
 Tailwind CSS v4 via `@tailwindcss/vite` (no `tailwind.config.js` — config lives in `src/styles/tailwind.css`/`theme.css` using CSS-based Tailwind v4 config). Path alias `@` maps to `src/` (`vite.config.ts` + `tsconfig`).
 
+### Design system
+
+The app is dark-only (no theme toggle). The real palette is **hardcoded per-component** via inline `style` props and Tailwind arbitrary-value classes (`bg-[#fbbf24]`, `text-[#fbbf24]`, …) — not via Tailwind color utilities or CSS variables. When touching UI, match these values literally rather than reaching for `bg-primary`/`bg-card`/etc.
+
+- **Background**: `#08080f` (near-black navy) on every page root — also `theme_color`/`background_color` in the PWA manifest (`vite.config.ts`) and `<meta name="theme-color">` in `index.html`, so it must stay in sync in all three places.
+- **Surface**: `#14141f` for cards, inputs, and panels sitting on the background.
+- **Accent (brand)**: `#fbbf24` (amber/gold) — icons, active/selected states, links, progress-bar fill, and primary-button background. Primary buttons use the background color (`#08080f`) as text color on the accent fill, with `fontWeight: 700`.
+- **Borders**: low-opacity white for default separation (`border-white/5` / `/8` / `/10`, or `rgba(255,255,255,0.05–0.12)`); accent-tinted borders (`rgba(251,191,36,0.3–0.6)`) on hover/selected states.
+- **Text**: white for primary content; Tailwind gray scale (`text-gray-300` → `text-gray-600`, darkest = least prominent) for secondary/tertiary text and placeholders.
+- **Semantic feedback colors**: success/correct `#4ade80`, medium/warning `#fbbf24`, danger/hard/incorrect `#f87171`. Each is paired with a ~10% opacity background tint and ~30–50% opacity border tint of the same color. `difficultyColors` in `src/app/utils/quizHelpers.ts` is the one shared constant (used for difficulty badges); the same three colors are otherwise re-derived ad hoc at each usage site (`QuestionCard.tsx` correctness states, `QuizCard.tsx`'s `ResultBadge`, `ScoreScreen.tsx`'s progress bar) — there's no shared "semantic colors" export, so a color change means updating every site by hand.
+- **Typography**: no custom font is loaded — default Tailwind/browser sans-serif stack. Sizes come from Tailwind utility classes (`text-xs` … `text-4xl`); weight is set via inline `style={{ fontWeight }}` (600 for headings/emphasis, 700 for CTAs and score numbers) rather than Tailwind's `font-*` classes.
+- **Shape**: `rounded-full` for pills/badges/progress bars/avatar-style icon circles, `rounded-xl` for cards/inputs/buttons, `rounded-2xl` for hero and score panels.
+- **Layout**: content constrained to `max-w-3xl mx-auto` (list/detail pages) or `max-w-4xl` (home grid), with `px-4` page gutters and `gap-2`/`gap-3`/`space-y-3` for list spacing.
+- **Elevation/interaction**: no real box-shadow elevation; hover state on cards/buttons is an accent-colored glow via arbitrary Tailwind shadow (`hover:shadow-[0_0_20-30px_rgba(251,191,36,0.1-0.12)]`) plus a border-color transition toward the accent, animated with `transition-all duration-200`/`duration-300`.
+- **Icons**: `lucide-react` exclusively, sized 11–34px by context, colored via inline `style={{ color }}` (not Tailwind text-color classes).
+
+`src/styles/theme.css` defines a full shadcn/ui-style CSS variable theme (oklch tokens, `--primary: #030213`, a `.dark` class, base-layer `h1`–`h4`/`button`/`input` typography defaults) inherited from project scaffolding — **none of it is referenced anywhere under `src/app`**. Don't treat it as the source of truth; the hardcoded values above are what's actually rendered.
+
 ### PWA
 
 `vite-plugin-pwa` (`vite.config.ts`) generates the manifest and service worker (`autoUpdate`). Icons/manifest fields are defined inline in the Vite config, not in a separate `manifest.json` — edit them there.
