@@ -16,13 +16,14 @@ interface YearlyQuizProps {
 	onBack: () => void;
 }
 
-type RowFeedback = "correct" | "wrong" | null;
+type RowFeedback = "wrong" | null;
 type RowResult = { userAnswer: string; correct: boolean };
 
 export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 	const total = data.entries.length;
 	const [inputs, setInputs] = useState<Record<number, string>>({});
 	const [feedbacks, setFeedbacks] = useState<Record<number, RowFeedback>>({});
+	const [locked, setLocked] = useState<Record<number, RowResult>>({});
 	const [results, setResults] = useState<Record<number, RowResult> | null>(
 		null,
 	);
@@ -39,16 +40,15 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 		if (!userAnswer) return;
 		const entry = data.entries.find((e) => e.year === year)!;
 		const correct = isAnswerMatch(userAnswer, entry.answer);
-		setFeedbacks((prev) => ({
-			...prev,
-			[year]: correct ? "correct" : "wrong",
-		}));
 		if (correct) {
+			setLocked((prev) => ({ ...prev, [year]: { userAnswer, correct: true } }));
 			const currentIdx = data.entries.findIndex((e) => e.year === year);
 			const next = data.entries
 				.slice(currentIdx + 1)
-				.find((e) => feedbacks[e.year] !== "correct");
+				.find((e) => !locked[e.year]);
 			if (next) setTimeout(() => inputRefs.current[next.year]?.focus(), 0);
+		} else {
+			setFeedbacks((prev) => ({ ...prev, [year]: "wrong" }));
 		}
 	};
 
@@ -73,6 +73,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 	const handleReset = () => {
 		setInputs({});
 		setFeedbacks({});
+		setLocked({});
 		setResults(null);
 		setFocusedYear(null);
 		setTimeout(() => inputRefs.current[data.entries[0]?.year]?.focus(), 0);
@@ -121,7 +122,7 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 
 				<div className="space-y-1.5 mb-5">
 					{data.entries.map((entry) => {
-						const result = results?.[entry.year];
+						const result = results?.[entry.year] ?? locked[entry.year];
 						const feedback = feedbacks[entry.year];
 						const isFocused = focusedYear === entry.year;
 
@@ -130,8 +131,6 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 							borderColor = result.correct
 								? "rgba(74,222,128,0.4)"
 								: "rgba(248,113,113,0.4)";
-						} else if (feedback === "correct") {
-							borderColor = "rgba(74,222,128,0.3)";
 						} else if (feedback === "wrong") {
 							borderColor = "rgba(248,113,113,0.3)";
 						} else if (isFocused) {
@@ -216,13 +215,9 @@ export function YearlyQuiz({ quiz, data, onBack }: YearlyQuizProps) {
 								</div>
 
 								{/* Feedback icon (after submit) */}
-								{!result && feedback && (
+								{!result && feedback === "wrong" && (
 									<span className="shrink-0">
-										{feedback === "correct" ? (
-											<CheckCircle size={14} style={{ color: "#4ade80" }} />
-										) : (
-											<XCircle size={14} style={{ color: "#f87171" }} />
-										)}
+										<XCircle size={14} style={{ color: "#f87171" }} />
 									</span>
 								)}
 
