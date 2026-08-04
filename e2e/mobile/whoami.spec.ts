@@ -148,12 +148,20 @@ test("suit le pan du visualViewport (iOS Safari) quand le clavier virtuel s'ouvr
 test("scrolle automatiquement vers le dernier indice révélé sur un petit viewport", async ({
 	page,
 }) => {
-	await page.goto("/");
+	// Installed before navigating, and stepped one clue-reveal interval at a
+	// time below. An earlier version of this test waited on real wall-clock
+	// timers (whoami-livingston's 5s clueInterval) instead, which turned out
+	// to be genuinely flaky — not slow, but a ~1-in-3 failure rate — when run
+	// as part of the full parallel suite (12 tests across up to 10 workers):
+	// enough CPU contention from the other concurrent browsers could delay
+	// this page's real setInterval firing past the assertion timeout, no
+	// matter how generous. page.clock removes that race entirely, since
+	// advancing virtual time doesn't depend on the host's actual scheduling.
+	await page.clock.install();
 
+	await page.goto("/");
 	await page.getByRole("button", { name: "Qui suis-je ?" }).click();
-	// whoAmIPlayers[1] is "Shaun Livingston" (id "whoami-livingston",
-	// clueInterval 5s — the fastest of the roster, used here to keep this
-	// real-time-clue-reveal test short).
+	// whoAmIPlayers[1] is "Shaun Livingston" (id "whoami-livingston").
 	await page
 		.getByRole("button", { name: /Joueur mystère/ })
 		.nth(1)
@@ -161,27 +169,48 @@ test("scrolle automatiquement vers le dernier indice révélé sur un petit view
 	await expect(page).toHaveURL(/\/whoami\/whoami-livingston$/);
 
 	// Small viewport so 3 revealed clues overflow the clue list and require
-	// scrolling to reach the latest one.
-	const original = page.viewportSize();
-	if (!original) throw new Error("viewport size unavailable in this project");
-	await page.setViewportSize({ width: original.width, height: 300 });
+	// scrolling to reach the latest one. Using page.setViewportSize() here
+	// (a real CDP-level resize) turned out to have the same problem real
+	// wall-clock waiting did above: the app only reacts once the browser's
+	// own, separate `resize` event on `window.visualViewport` is dispatched
+	// and handled, and under heavy parallel-suite CPU contention that could
+	// take several real seconds — with nothing in this otherwise-instant,
+	// clock-driven test left to absorb the wait. Mocking `visualViewport`
+	// directly and firing the event ourselves (same technique as the other
+	// two tests above) makes this deterministic instead: our own dispatched
+	// event is handled synchronously within this call, no async browser
+	// pipeline involved.
+	await page.evaluate(() => {
+		const vv = window.visualViewport as VisualViewport;
+		Object.defineProperty(vv, "height", { value: 300, configurable: true });
+		vv.dispatchEvent(new Event("resize"));
+	});
 
-	// Third clue for "whoami-livingston", copied verbatim from
-	// src/app/data/whoAmIPlayersData.ts — auto-revealed ~10s in (2 intervals
-	// after the always-visible first clue). expect()'s polling covers the
-	// wait, no manual sleep needed.
+	// Second and third clues for "whoami-livingston", copied verbatim from
+	// src/app/data/whoAmIPlayersData.ts. Stepping the clock one clueInterval
+	// (5s) at a time and syncing on each clue's visibility in between —
+	// rather than jumping both intervals in a single runFor() call — avoids
+	// a separate flakiness page.clock has with firing several setInterval
+	// ticks at once without an intermediate sync point (see CLAUDE.md's e2e
+	// section for more on this).
+	const secondClue = page.getByText(
+		"J'étais un meneur de grande taille, réputé pour mon jeu fluide et ma vision du terrain.",
+	);
+	await page.clock.runFor(5_000);
+	await expect(secondClue).toBeVisible();
+
 	const thirdClue = page.getByText(
 		"J'ai été sélectionné en 4e position de la draft NBA 2004.",
 	);
-	await expect(thirdClue).toBeVisible({ timeout: 15_000 });
+	await page.clock.runFor(5_000);
+	await expect(thirdClue).toBeVisible();
 
 	// No manual scroll performed: the clue list must have scrolled itself as
 	// each new clue appeared, so the latest one is already on screen. Before
 	// the fix, the scroll-to-bottom effect only ran once on mount (empty
 	// dependency array), so later clues stayed out of view until the user
-	// scrolled manually — easy to miss on a phone screen. A generous timeout
-	// covers the "smooth" scroll animation settling under CI/parallel load.
-	await expect(thirdClue).toBeInViewport({ timeout: 10_000 });
+	// scrolled manually — easy to miss on a phone screen.
+	await expect(thirdClue).toBeInViewport();
 });
 
 test("bloque le scroll de la page pendant la partie, et le restaure en la quittant", async ({

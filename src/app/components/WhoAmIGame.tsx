@@ -107,11 +107,15 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 		};
 	}, [solved, totalClues, CLUE_REVEAL_INTERVAL]);
 
-	// Scroll to bottom when a new clue appears
+	// Scroll to bottom when a new clue appears. Instant ("auto"), not
+	// "smooth": an animated scroll's duration depends on the browser
+	// actually getting to run it, which isn't guaranteed to happen quickly
+	// under CPU contention (e.g. many other tabs/processes) — instant scroll
+	// resolves the position synchronously instead.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run when visibleClues changes, not because it's read below
 	useEffect(() => {
 		clueEndRef.current?.scrollIntoView({
-			behavior: "smooth",
+			behavior: "auto",
 			block: "nearest",
 		});
 	}, [visibleClues]);
