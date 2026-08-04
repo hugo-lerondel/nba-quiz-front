@@ -68,12 +68,13 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 	}, [solved, totalClues, CLUE_REVEAL_INTERVAL]);
 
 	// Scroll to bottom when a new clue appears
+	// biome-ignore lint/correctness/useExhaustiveDependencies: re-run when visibleClues changes, not because it's read below
 	useEffect(() => {
 		clueEndRef.current?.scrollIntoView({
 			behavior: "smooth",
 			block: "nearest",
 		});
-	}, []);
+	}, [visibleClues]);
 
 	const handleGuess = useCallback(() => {
 		const trimmed = guess.trim();

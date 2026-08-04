@@ -94,3 +94,41 @@ test("le champ de réponse reste visible quand plusieurs indices se sont accumul
 	expect(inputBottom).toBeLessThanOrEqual(keyboardOpenHeight);
 	await expect(firstClue).toBeInViewport();
 });
+
+test("scrolle automatiquement vers le dernier indice révélé sur un petit viewport", async ({
+	page,
+}) => {
+	await page.goto("/");
+
+	await page.getByRole("button", { name: "Qui suis-je ?" }).click();
+	// whoAmIPlayers[1] is "Shaun Livingston" (id "whoami-livingston",
+	// clueInterval 5s — the fastest of the roster, used here to keep this
+	// real-time-clue-reveal test short).
+	await page
+		.getByRole("button", { name: /Joueur mystère/ })
+		.nth(1)
+		.click();
+	await expect(page).toHaveURL(/\/whoami\/whoami-livingston$/);
+
+	// Small viewport so 3 revealed clues overflow the clue list and require
+	// scrolling to reach the latest one.
+	const original = page.viewportSize();
+	if (!original) throw new Error("viewport size unavailable in this project");
+	await page.setViewportSize({ width: original.width, height: 300 });
+
+	// Third clue for "whoami-livingston", copied verbatim from
+	// src/app/data/whoAmIPlayersData.ts — auto-revealed ~10s in (2 intervals
+	// after the always-visible first clue). expect()'s polling covers the
+	// wait, no manual sleep needed.
+	const thirdClue = page.getByText(
+		"J'ai été sélectionné en 4e position de la draft NBA 2004.",
+	);
+	await expect(thirdClue).toBeVisible({ timeout: 15_000 });
+
+	// No manual scroll performed: the clue list must have scrolled itself as
+	// each new clue appeared, so the latest one is already on screen. Before
+	// the fix, the scroll-to-bottom effect only ran once on mount (empty
+	// dependency array), so later clues stayed out of view until the user
+	// scrolled manually — easy to miss on a phone screen.
+	await expect(thirdClue).toBeInViewport();
+});
