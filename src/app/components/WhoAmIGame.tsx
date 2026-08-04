@@ -42,6 +42,24 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 		return () => vv.removeEventListener("resize", handleResize);
 	}, []);
 
+	// The layout viewport (and window.innerHeight) doesn't shrink for the
+	// keyboard either, so with the page still in normal document flow the
+	// browser can pan/scroll the whole page to keep the focused input above
+	// it — independently of our own height/overflow handling above. Take the
+	// game out of document flow entirely and lock body scroll while it's
+	// mounted so there's nothing left for the browser to scroll.
+	useEffect(() => {
+		const { body, documentElement: html } = document;
+		const prevBodyOverflow = body.style.overflow;
+		const prevHtmlOverflow = html.style.overflow;
+		body.style.overflow = "hidden";
+		html.style.overflow = "hidden";
+		return () => {
+			body.style.overflow = prevBodyOverflow;
+			html.style.overflow = prevHtmlOverflow;
+		};
+	}, []);
+
 	// Tick timer
 	useEffect(() => {
 		if (solved) return;
@@ -136,7 +154,14 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 	return (
 		<div
 			className="flex flex-col overflow-hidden"
-			style={{ backgroundColor: "#08080f", height: viewportHeight }}
+			style={{
+				backgroundColor: "#08080f",
+				height: viewportHeight,
+				position: "fixed",
+				top: 0,
+				left: 0,
+				right: 0,
+			}}
 		>
 			{/* Header */}
 			<header

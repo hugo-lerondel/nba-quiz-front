@@ -132,3 +132,37 @@ test("scrolle automatiquement vers le dernier indice révélé sur un petit view
 	// scrolled manually — easy to miss on a phone screen.
 	await expect(thirdClue).toBeInViewport();
 });
+
+test("bloque le scroll de la page pendant la partie, et le restaure en la quittant", async ({
+	page,
+}) => {
+	await page.goto("/");
+
+	await page.getByRole("button", { name: "Qui suis-je ?" }).click();
+	await page
+		.getByRole("button", { name: /Joueur mystère/ })
+		.first()
+		.click();
+	await expect(page).toHaveURL(/\/whoami\/whoami-jordan$/);
+
+	// A real on-screen keyboard pans/scrolls the whole document to keep the
+	// focused input visible — a browser-level behavior that operates on the
+	// layout viewport, independent of our own overflow handling on the game's
+	// own container (see the keyboard-safe-layout test above). WhoAmIGame
+	// locks body/html scroll for as long as it's mounted so there's nothing
+	// left for the browser to pan.
+	const bodyOverflow = await page.evaluate(
+		() => getComputedStyle(document.body).overflow,
+	);
+	expect(bodyOverflow).toBe("hidden");
+
+	await page.getByRole("button", { name: "Retour" }).click();
+	await expect(page).toHaveURL(/\/whoami$/);
+
+	// Leaving the game must restore normal scrolling on the rest of the app.
+	// The cleanup runs on unmount, which trails the URL change slightly, so
+	// poll instead of asserting immediately.
+	await expect
+		.poll(() => page.evaluate(() => getComputedStyle(document.body).overflow))
+		.toBe("visible");
+});
