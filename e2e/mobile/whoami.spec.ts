@@ -95,6 +95,56 @@ test("le champ de réponse reste visible quand plusieurs indices se sont accumul
 	await expect(firstClue).toBeInViewport();
 });
 
+test("suit le pan du visualViewport (iOS Safari) quand le clavier virtuel s'ouvre", async ({
+	page,
+}) => {
+	await page.goto("/");
+	await page.getByRole("button", { name: "Qui suis-je ?" }).click();
+	await page
+		.getByRole("button", { name: /Joueur mystère/ })
+		.first()
+		.click();
+	await expect(page).toHaveURL(/\/whoami\/whoami-jordan$/);
+
+	const guessInput = page.getByPlaceholder(
+		"Qui suis-je ? (Entrée pour valider)",
+	);
+
+	// On iOS Safari, an open keyboard doesn't just shrink `visualViewport`
+	// (already covered above) — it also pans it down over the layout
+	// viewport, which never shrinks, exposed as a non-zero
+	// `visualViewport.offsetTop`. A `position: fixed` element pinned to the
+	// layout viewport (top: 0, as WhoAmIGame's root is) would slide out from
+	// under that pan and off-screen; the fix listens for this and applies a
+	// matching `translate` so the container stays aligned with whatever
+	// portion of the page is actually visible.
+	const height = 400;
+	const offsetTop = 400;
+	await page.evaluate(
+		({ height, offsetTop }) => {
+			const vv = window.visualViewport as VisualViewport;
+			Object.defineProperty(vv, "height", {
+				value: height,
+				configurable: true,
+			});
+			Object.defineProperty(vv, "offsetTop", {
+				value: offsetTop,
+				configurable: true,
+			});
+			vv.dispatchEvent(new Event("resize"));
+			vv.dispatchEvent(new Event("scroll"));
+		},
+		{ height, offsetTop },
+	);
+
+	await expect
+		.poll(() => guessInput.evaluate((el) => el.getBoundingClientRect().top))
+		.toBeGreaterThanOrEqual(offsetTop);
+	await expect
+		.poll(() => guessInput.evaluate((el) => el.getBoundingClientRect().bottom))
+		.toBeLessThanOrEqual(offsetTop + height);
+});
+
 test("scrolle automatiquement vers le dernier indice révélé sur un petit viewport", async ({
 	page,
 }) => {
@@ -129,8 +179,9 @@ test("scrolle automatiquement vers le dernier indice révélé sur un petit view
 	// each new clue appeared, so the latest one is already on screen. Before
 	// the fix, the scroll-to-bottom effect only ran once on mount (empty
 	// dependency array), so later clues stayed out of view until the user
-	// scrolled manually — easy to miss on a phone screen.
-	await expect(thirdClue).toBeInViewport();
+	// scrolled manually — easy to miss on a phone screen. A generous timeout
+	// covers the "smooth" scroll animation settling under CI/parallel load.
+	await expect(thirdClue).toBeInViewport({ timeout: 10_000 });
 });
 
 test("bloque le scroll de la page pendant la partie, et le restaure en la quittant", async ({
@@ -150,11 +201,12 @@ test("bloque le scroll de la page pendant la partie, et le restaure en la quitta
 	// layout viewport, independent of our own overflow handling on the game's
 	// own container (see the keyboard-safe-layout test above). WhoAmIGame
 	// locks body/html scroll for as long as it's mounted so there's nothing
-	// left for the browser to pan.
-	const bodyOverflow = await page.evaluate(
-		() => getComputedStyle(document.body).overflow,
-	);
-	expect(bodyOverflow).toBe("hidden");
+	// left for the browser to pan. The effect that applies the lock trails
+	// the URL change slightly (same as the restore-on-unmount check below),
+	// so poll instead of asserting immediately.
+	await expect
+		.poll(() => page.evaluate(() => getComputedStyle(document.body).overflow))
+		.toBe("hidden");
 
 	await page.getByRole("button", { name: "Retour" }).click();
 	await expect(page).toHaveURL(/\/whoami$/);

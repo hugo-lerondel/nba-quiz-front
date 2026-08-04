@@ -3,7 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo_basket.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- interactive-widget=resizes-content: on browsers that support it
+         (Chrome 108+), the layout viewport itself shrinks for the on-screen
+         keyboard instead of the browser panning the page to keep the
+         focused input visible — see WhoAmIGame.tsx for the JS-based
+         fallback needed on browsers (notably iOS Safari) that don't. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
+    />
     <title>HoopQuiz</title>
 
     <!-- PWA manifest -->

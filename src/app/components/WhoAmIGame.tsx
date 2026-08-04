@@ -31,15 +31,37 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 	// chrome like the URL bar) on either iOS Safari or Chrome, so the layout
 	// never actually reacted to the keyboard opening — only `visualViewport`
 	// does. Track it in JS and use that as the container height instead.
-	const [viewportHeight, setViewportHeight] = useState(
-		() => window.visualViewport?.height ?? window.innerHeight,
-	);
+	//
+	// Height alone isn't enough on a real device, though: the keyboard also
+	// makes the browser pan the *visual* viewport over the (unshrunk) layout
+	// viewport to keep the focused input in view — on iOS Safari in
+	// particular, `position: fixed` elements are pinned to the layout
+	// viewport, not the visual one, so that pan slides our fixed container
+	// out of view underneath it, which reads as "the whole page scrolling"
+	// even though document/body themselves never moved (overflow: hidden
+	// below has no effect on this, since it isn't a document scroll). Track
+	// `offsetTop`/`offsetLeft` too and counteract the pan with a translate so
+	// the container stays visually pinned to whatever's actually on screen.
+	const [viewport, setViewport] = useState(() => ({
+		height: window.visualViewport?.height ?? window.innerHeight,
+		offsetTop: window.visualViewport?.offsetTop ?? 0,
+		offsetLeft: window.visualViewport?.offsetLeft ?? 0,
+	}));
 	useEffect(() => {
 		const vv = window.visualViewport;
 		if (!vv) return;
-		const handleResize = () => setViewportHeight(vv.height);
-		vv.addEventListener("resize", handleResize);
-		return () => vv.removeEventListener("resize", handleResize);
+		const handleViewportChange = () =>
+			setViewport({
+				height: vv.height,
+				offsetTop: vv.offsetTop,
+				offsetLeft: vv.offsetLeft,
+			});
+		vv.addEventListener("resize", handleViewportChange);
+		vv.addEventListener("scroll", handleViewportChange);
+		return () => {
+			vv.removeEventListener("resize", handleViewportChange);
+			vv.removeEventListener("scroll", handleViewportChange);
+		};
 	}, []);
 
 	// The layout viewport (and window.innerHeight) doesn't shrink for the
@@ -156,11 +178,12 @@ export function WhoAmIGame({ player, onBack }: WhoAmIGameProps) {
 			className="flex flex-col overflow-hidden"
 			style={{
 				backgroundColor: "#08080f",
-				height: viewportHeight,
+				height: viewport.height,
 				position: "fixed",
 				top: 0,
 				left: 0,
 				right: 0,
+				transform: `translate(${viewport.offsetLeft}px, ${viewport.offsetTop}px)`,
 			}}
 		>
 			{/* Header */}
