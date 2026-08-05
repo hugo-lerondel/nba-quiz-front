@@ -1,34 +1,30 @@
-// Canonical answer (as written in quiz/player data) -> list of shorter
-// accepted aliases. Only add an alias when it identifies that answer
-// unambiguously among ALL answers in the app (not just within one quiz) —
-// e.g. "Malone" is deliberately absent because both "Karl Malone" and
-// "Moses Malone" are MVP-by-year answers, and "Nikola" is absent for
-// "Nikola Jokic" because several NBA players share that first name.
-//
-// No imports here on purpose: quizHelpers.ts imports ANSWER_ALIASES from
-// this file and normalizes the keys itself. Importing `normalize` back
-// from quizHelpers.ts here would create a circular module dependency.
 export const ANSWER_ALIASES: Record<string, string[]> = {
-	"LeBron James": ["Lebron"],
+	"LeBron James": ["Lebron", "GOAT", "King James"],
 	"Nikola Jokic": ["Jokic"],
-	"Shai Gilgeous-Alexander": ["Shai"],
+	"Shai Gilgeous-Alexander": ["Shai", "Gilgeous-Alexander"],
 	"Michael Jordan": ["Jordan"],
 	"Kobe Bryant": ["Kobe"],
 	"Stephen Curry": ["Curry"],
-	"Giannis Antetokounmpo": ["Giannis"],
-	"Kevin Durant": ["Durant"],
-	"Shaquille O'Neal": ["Shaq"],
+	"Giannis Antetokounmpo": ["Giannis", "Antetokounmpo"],
+	"Kevin Durant": ["Durant", "KD"],
+	"Shaquille O'Neal": ["Shaq", "Shaquille"],
 	"Magic Johnson": ["Magic"],
 	"Larry Bird": ["Bird"],
 	"Wilt Chamberlain": ["Wilt", "Chamberlain"],
-	"Kareem Abdul-Jabbar": ["Kareem"],
+	"Kareem Abdul-Jabbar": ["Kareem", "Abdul-Jabbar"],
 	"Tim Duncan": ["Duncan"],
 	"Hakeem Olajuwon": ["Hakeem", "Olajuwon"],
 	"Dirk Nowitzki": ["Dirk", "Nowitzki"],
 	"Luka Doncic": ["Luka", "Doncic"],
-	"Joel Embiid": ["Embiid"],
-	// data typo in six-rings-players (classicEnumerationQuizzes.ts) — this
-	// alias key intentionally matches the typo verbatim, not the correct
-	// spelling
+	"Joel Embiid": ["Embiid", "Embid", "Joel Embid"],
 	"Karem Abdul-Jabbar": ["Kareem Abdul-Jabbar", "Kareem"],
+	"Russell Westbrook": ["Westbrook"],
+	"Derrick Rose": ["Rose"],
+	"Steve Nash": ["Nash"],
+	"Kevin Garnett": ["Kevin Garnett", "KG"],
+	"Allen Iverson": ["Iverson", "AI"],
+	"Bob McAdoo": ["McAdoo"],
+	"Wes Unseld": ["Unseld"],
+	"Bob Pettit": ["Pettit"],
+	"Bob Cousy": ["Cousy"],
 };
